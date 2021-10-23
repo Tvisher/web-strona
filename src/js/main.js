@@ -46,10 +46,10 @@ const pageSlider = new Swiper('.page', {
   observer: true,
 
   //Обновить слайдер при изменении родительских элементов слайдера
-  observeParents: true,
+  // observeParents: true,
 
   //Обновить слайдер при изменении дочерних элементов слайдера
-  observeSlideChildren: true,
+  // observeSlideChildren: true,
 
   //Навигация,буллеты,текущее положение, прогрессбар
   pagination: {
@@ -90,7 +90,8 @@ const pageSlider = new Swiper('.page', {
       // setScrollType();
     },
     click: function () {
-      clickOnSlide();
+      // clickOnSlide();
+      // translateTitle()
     }
   }
 
@@ -98,13 +99,17 @@ const pageSlider = new Swiper('.page', {
 
 pageSlider.init();
 
-function clickOnSlide() {
-  // console.log(pageSlider.clickedIndex);
+
+wrapper.addEventListener('click', clickOnSlide);
+function clickOnSlide(e) {
+  !e.target.closest('page') && false;
   // Отписываем открытие описания слайда
   const activeContentParent = titlesArr[pageSlider.clickedIndex];
   const activeContentCategory = activeContentParent.querySelector('.slide__category');
   const activeContentDesc = activeContentParent.querySelector('.slide__desc');
   const activeTitleLi = titlesArr[pageSlider.clickedIndex];
+  const nextTitle = titlesArr[pageSlider.clickedIndex + 1];
+  const prevtTitle = titlesArr[pageSlider.clickedIndex - 1];
   // если открыто описание
   if (activeContentCategory.classList.contains('show')) {
     activeTitleLi.classList.remove('show');
@@ -112,26 +117,24 @@ function clickOnSlide() {
     activeContentCategory.classList.remove('show');
     activeContentDesc.classList.remove('show');
     galeryWindow.classList.remove('increase');
-    const nextTitle = titlesArr[pageSlider.clickedIndex + 1];
+    pageSlider.enable();
     setTimeout(() => {
+      prevtTitle && prevtTitle.classList.remove('prew');
       nextTitle && nextTitle.classList.remove('next');
-      pageSlider.allowSlideNext = true;
-      pageSlider.allowSlidePrev = true;
-    }, 1000);
+    }, 200);
 
-    return;
+
+  } else {
+    // если описание скрыто
+    pageSlider.disable();
+    activeTitleLi.classList.add('show');
+    activeTitleLi.classList.remove('unshow');
+    activeContentCategory.classList.add('show');
+    activeContentDesc.classList.add('show');
+    galeryWindow.classList.add('increase');
+    prevtTitle && prevtTitle.classList.add('prew');
+    nextTitle && nextTitle.classList.add('next');
   }
-  // если описание скрыто
-  pageSlider.allowSlideNext = false;
-  pageSlider.allowSlidePrev = false;
-  activeTitleLi.classList.add('show');
-  activeTitleLi.classList.remove('unshow');
-  activeContentCategory.classList.add('show');
-  activeContentDesc.classList.add('show');
-  galeryWindow.classList.add('increase');
-  const nextTitle = titlesArr[pageSlider.clickedIndex + 1];
-  nextTitle && nextTitle.classList.add('next');
-
 }
 
 
@@ -177,6 +180,7 @@ function menuSliderRemoove() {
 // }
 
 const titlesArr = [...document.querySelectorAll('.slider__titles > li')];
+const titlesEl = [...document.querySelectorAll('.slide__bg')];
 const titlesParrent = titlesArr[0].parentElement;
 const galeryArr = [...document.querySelectorAll('.galery img')];
 const galeryWindow = document.querySelector('.galery');
@@ -192,10 +196,44 @@ for (let index = 0; index < sliderLink.length; index++) {
 
 let pathImage = galeryArr.map((item) => item.src);
 galeryArr[0].src = pathImage[0];
-let skideHeight = titlesArr[0].clientHeight;
+// let skideHeight = titlesArr[0].clientHeight;
+
+
+
+
+window.onresize = (e) => {
+  titlesParrent.addEventListener('transitionend', (e) => {
+    updateSize()
+  }, { once: true })
+
+}
+// Изменянем бэкграунд слайдов в зависимости от ширины экрана
+function updateBackground() {
+  if (window.innerWidth <= 578.98) {
+    for (let index = 0; index < titlesEl.length; index++) {
+      const element = titlesEl[index];
+      element.style.backgroundImage = `url(${galeryArr[index].dataset.src})`;
+    }
+  }
+  else {
+    for (let index = 0; index < titlesEl.length; index++) {
+      const element = titlesEl[index];
+      element.style.backgroundImage = `none`;
+    }
+  }
+}
+updateBackground();
+window.addEventListener('resize', updateBackground);
+
+// Меняем translate у заголовков в зависимости от выбранного слайда
+function updateSize() {
+  let skideHeight = titlesArr[0].clientHeight;
+  titlesParrent.style.transform = `translateY(-${skideHeight * counter}px)`;
+}
+
+// Работаем с следущим и предыдущими заголовками (скрываем или показываем)
 let counter = 0;
 function translateTitle() {
-  console.log(pageSlider.activeIndex);
   const activeSlide = pageSlider.activeIndex; // текущий слайд
   counter = activeSlide;
   // Меняем цвет заголовка слайда
@@ -216,36 +254,6 @@ function translateTitle() {
   updateSize();
 }
 
-window.onresize = (e) => {
-  titlesParrent.addEventListener('transitionend', (e) => {
-    updateSize()
-  }, { once: true })
-
-}
-
-function updateBackground() {
-  if (window.innerWidth <= 576) {
-    console.log('bg');
-    for (let index = 0; index < titlesArr.length; index++) {
-      const element = titlesArr[index];
-      element.style.backgroundImage = `url(${galeryArr[index].src})`;
-    }
-  }
-  else {
-    console.log('nobg');
-    for (let index = 0; index < titlesArr.length; index++) {
-      const element = titlesArr[index];
-      element.style.backgroundImage = `none`;
-    }
-  }
-}
-updateBackground();
-window.addEventListener('resize', updateBackground);
-
-function updateSize() {
-  skideHeight = titlesArr[0].clientHeight;
-  titlesParrent.style.transform = `translateY(-${skideHeight * counter}px)`;
-}
 
 pageSlider.on('realIndexChange', translateTitle);
 
