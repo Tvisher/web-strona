@@ -190,16 +190,21 @@ window.onload = function () {
 
 	// once our plane is ready, we could start listening to mouse/touch events and update its uniforms
 	plane.onReady(function () {
-
+		if (window.innerWidth >= 578.98) {
+			plane.setPerspective(100);
+			secondplane.setPerspective(99);
+		}
 		// set a field of view of 35 to exagerate perspective
 		// we could have done  it directly in the initial params
-		plane.setPerspective(100);
-		secondplane.setPerspective(99);
+
 
 	}).onRender(function () {
 		// update our time uniform value
-		plane.uniforms.time.value++;
-		secondplane.uniforms.time.value++;
+		if (window.innerWidth >= 578.98) {
+			plane.uniforms.time.value++;
+			secondplane.uniforms.time.value++;
+		}
+
 	});
 
 }
