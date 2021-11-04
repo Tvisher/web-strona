@@ -4,6 +4,7 @@ const pageSlider = new Swiper('.page', {
   wrapperClass: "page__wrapper",
   slideClass: "page__screen",
   slidesPerGroup: 1,
+  noSwipingClass: 'calculations__ranges',
   // Вертикальный слайдер
   direction: 'vertical',
   parallax: true,
@@ -50,6 +51,7 @@ const pageSlider = new Swiper('.page', {
     // Инициализация 
     init: function () {
 
+
     },
     afterInit: function () {
       document.body.classList.add('loaded');
@@ -61,7 +63,11 @@ const pageSlider = new Swiper('.page', {
     slideChangeTransitionStart: function () {
       if (pageSlider.slides[pageSlider.realIndex].querySelector('.services')) {
         pageSlider.disable();
-        // console.log(1);
+        if (window.innerWidth <= 578.98) {
+          servicesSlider.enable();
+          servicesSlider.slideNext();
+          servicesSlider.disable();
+        }
       }
     },
     slideChangeTransitionEnd: function () {
@@ -70,12 +76,6 @@ const pageSlider = new Swiper('.page', {
       } else {
         servicesSlider.enable();
         pageSlider.enable();
-      }
-      if (pageSlider.slides[pageSlider.realIndex].querySelector('.swiper.portfolio')) {
-        portfilio.slideNext(1200);
-        setTimeout(() => {
-          portfilio.slideNext(1200);
-        }, 1300);
       }
     },
     resize: function () {
@@ -89,6 +89,8 @@ const portfilio = new Swiper(".portfolio", {
   slidesPerView: 2,
   preloadImages: true,
   loop: true,
+  // slidesOffsetBefore: 50,
+  // slidesOffsetAfter: 50,
   speed: 800,
   touchRatio: 1,
   //Обновить слайдер при изменении элементов слайдера
@@ -111,9 +113,17 @@ const portfilio = new Swiper(".portfolio", {
     //Вкл/Выкл упрапвление клавишами pageUp pageDown
     pageUpDown: true,
   },
+  effect: 'coverflow',
+  coverflowEffect: {
+    rotate: 20,
+    slideShadows: false,
+  },
   breakpoints: {
     1025: {
-      slidesPerView: 5,
+      slidesPerView: 6,
+    },
+    576: {
+      slidesPerView: 4,
     },
     414: {
       slidesPerView: 3,
@@ -159,7 +169,7 @@ const servicesSlider = new Swiper('.services__slider', {
 
 
 // function zIndexAdd() {
-//   const slides = portfilio.slides;
+//   const slides = pageSlider.slides;
 //   for (let index = 0; index < slides.length; index++) {
 //     const element = slides[index];
 //     element.style.zIndex = index + 1;
@@ -174,14 +184,23 @@ function clickOnSlide(e) {
   !e.target.closest('services') && false;
   const activeTitleLi = titlesArr[servicesSlider.realIndex];
   const nextTitle = titlesArr[servicesSlider.realIndex + 1];
-  const prevtTitle = titlesArr[servicesSlider.realIndex - 1];
+  // const prevtTitle = titlesArr[servicesSlider.realIndex - 1];
+  for (let index = 0; index < servicesSlider.realIndex; index++) {
+    const prevtTitle = titlesArr[index];
+    if (activeTitleLi.classList.contains('show')) {
+      prevtTitle && prevtTitle.classList.remove('prew');
+    } else {
+      prevtTitle && prevtTitle.classList.add('prew');
+    }
+
+  }
   // если открыто описание
   if (activeTitleLi.classList.contains('show')) {
     titlesParrent.classList.remove('show');
     activeTitleLi.classList.remove('show');
     activeTitleLi.classList.add('unshow');
     galeryWindow.classList.remove('increase');
-    prevtTitle && prevtTitle.classList.remove('prew');
+    // prevtTitle && prevtTitle.classList.remove('prew');
     nextTitle && nextTitle.classList.remove('next');
     servicesSlider.enable();
     activeTitleLi.addEventListener('animationend', (e) => {
@@ -203,7 +222,7 @@ function clickOnSlide(e) {
     activeTitleLi.classList.add('show');
     activeTitleLi.classList.remove('unshow');
     galeryWindow.classList.add('increase');
-    prevtTitle && prevtTitle.classList.add('prew');
+    // prevtTitle && prevtTitle.classList.add('prew');
     nextTitle && nextTitle.classList.add('next');
   }
 }
@@ -284,25 +303,29 @@ servicesSlider.on('realIndexChange', translateTitle);
 
 
 
-// Описываем принцип работы кас томного селекта секции бриф
+// Описываем принцип работы кастомного селекта секции бриф
 const stepSelect = document.querySelector('.step__select__wrapper');
 const options = stepSelect.querySelector('.options__wrapper');
+const mobileSelectWrapper = document.querySelector('.mob_select_wrap');
 
 stepSelect.addEventListener('click', (e) => {
   let selectBtn = stepSelect.querySelector('.step__select');
   let selectBtnText = stepSelect.querySelector('.select__choice');
   let option = e.target.closest('.select__option');
+  let stepContent = selectBtn.closest('.step__content');
+  stepContent.style.height = 'auto';
 
   if (selectBtn && !options.classList.contains('show')) {
     options.classList.add('show');
-    selectBtn.classList.toggle('show');
+    selectBtn.classList.add('show');
+    mobileSelectWrapper.classList.add('show');
     options.style.height = 'auto';
+    // stepContent.style.height = 'auto';
     let height = options.clientHeight + 'px';
     options.style.height = '0px';
     setTimeout(function () {
       options.style.height = height;
-    }, 0);
-    console.log(1);
+    }, 100);
     return;
   }
   if (options.classList.contains('show') && option) {
@@ -310,21 +333,24 @@ stepSelect.addEventListener('click', (e) => {
     selectBtnText.innerText = optionText
     selectBtn.querySelector('.client-type').value = optionText;
     closeContent();
+    // // stepContent.style.height = 'auto';
     return;
   }
 
   if (options.classList.contains('show') && selectBtn) {
     closeContent();
-    console.log(3);
+    // stepContent.style.height = 'auto';
     return;
   }
 
   function closeContent() {
     options.style.height = '0px';
     selectBtn.classList.remove('show');
+    mobileSelectWrapper.classList.remove('show');
     options.addEventListener('transitionend',
       function () {
         options.classList.remove('show');
+
       }, {
       once: true
     });
@@ -332,10 +358,56 @@ stepSelect.addEventListener('click', (e) => {
 })
 
 
+const briefWrapper = document.querySelector('.brief');
+const briefSteps = briefWrapper.querySelectorAll('.brief__step');
+briefWrapper.addEventListener('click', (e) => {
+  if (window.innerWidth <= 578.98 || (window.innerHeight < 1023 && window.innerWidth <= 768)) {
+    // const stepTitle = e.target.closest('.step__title');
+    const stepParent = e.target.closest('.brief__step');
+    if (!stepParent) {
+      return;
+    }
+    // const stepParent = stepTitle.closest('.brief__step');
+    const stepContent = stepParent.querySelector('.step__content');
+    if (stepParent.classList.contains('focus')) {
+      return
+    }
+    remooveFocusClass();
+    stepParent.classList.add('focus');
+    stepContent.classList.add('show');
+    stepContent.style.height = 'auto';
+    let height = stepContent.clientHeight + 'px';
+    stepContent.style.height = '0px';
+    setTimeout(function () {
+      stepContent.style.height = height;
+    }, 100);
+  }
+  if (window.innerWidth > 578.99) {
+    const stepParent = e.target.closest('.brief__step');
+    remooveFocusClass();
+    stepParent && stepParent.classList.add('focus');
+  }
+})
+
+function remooveFocusClass() {
+  for (let index = 0; index < briefSteps.length; index++) {
+    const step = briefSteps[index];
+    if (step.classList.contains('focus')) {
+      const stepContent = step.querySelector('.step__content.show');
+      if (stepContent && (window.innerWidth <= 578.98 || (window.innerHeight < 1023 && window.innerWidth <= 768))) {
+        stepContent.classList.remove('show');
+        stepContent.style.height = '0px';
+      }
+      step.classList.remove('focus');
+    }
+  }
+}
+
+
+// Принцип работы меню бургер
 const burgerBtn = document.querySelector('.header__menu');
 const navigationMenu = document.querySelector('.site__nav');
 const navigationMenuVideoBg = navigationMenu.querySelector('.video_bg');
-
 burgerBtn.addEventListener('click', openNavigationMenu);
 function openNavigationMenu(e) {
   if (!this.classList.contains('active')) {
@@ -363,4 +435,97 @@ window.addEventListener('load', (e) => {
     document.body.classList.add('loaded');
     mainVideo.play();
   }
-})
+});
+
+// submit формы из секции бриф
+const briefForm = document.querySelector('.brief__form');
+briefForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+});
+
+
+
+//стераем галерею или востанавливаем в зависимости от ширины экрана
+// const galery = document.querySelector('.galery');
+// const galeryWrapper = galery.querySelector('.galery__wrapper');
+// function galeryUpdate() {
+//   if (window.innerWidth < 579) {
+//     galery.innerHTML = '';
+//   }
+//   else {
+//     galery.append(galeryWrapper);
+//   }
+//   console.log('asdasd');
+// }
+// galeryUpdate();
+// window.addEventListener('resize', galeryUpdate);
+
+
+
+
+for (let key in window.calculatorParameters) {
+  window.calculatorParameters[key].unshift(0);
+  window.calculatorParameters[key].forEach(price => Number(price));
+}
+// Параметры калькулятора
+const { analizaValues, struktutraValues, programirowanieValues, promovanieValues } = window.calculatorParameters;
+// Span для вывода итоговой стоимости
+const totalPrice = document.querySelector('#priceValue');
+
+//Зелёный инпут
+const ANALIZA = $("#ANALIZA");
+ANALIZA.ionRangeSlider({
+  from_min: 1,
+  values: analizaValues,
+});
+let analizaRange = $("#ANALIZA").data("ionRangeSlider");
+
+//Жёлтый инпут
+const STRUKTURA = $("#STRUKTURA");
+STRUKTURA.ionRangeSlider({
+  from_min: 1,
+  values: struktutraValues,
+});
+let strukturaRange = $("#STRUKTURA").data("ionRangeSlider");
+
+//Красный инпут
+const PROGRAMOWANIE = $("#PROGRAMOWANIE");
+PROGRAMOWANIE.ionRangeSlider({
+  from_min: 1,
+  values: programirowanieValues,
+});
+let programirowanieRange = $("#PROGRAMOWANIE").data("ionRangeSlider");
+
+//Синий инпут
+const PROMOWANIE = $("#PROMOWANIE");
+PROMOWANIE.ionRangeSlider({
+  from_min: 1,
+  values: promovanieValues,
+});
+let promovanieRange = $("#PROMOWANIE").data("ionRangeSlider");
+
+//слежка за событием изменения инпутов
+$('.calculations__ranges input').change(function () {
+  const inputName = this.id;
+  const InputValue = Number($(this).val());
+  // console.log(`Значение инпута ${inputName} : ${InputValue}`);
+  totalPrice.textContent = getTotalAmount();
+});
+
+//Функция подсчёта итоговой стоимости
+function getTotalAmount() {
+  let totalAmount = 0;
+  $('.calculations__ranges input').each(function () {
+    totalAmount += Number($(this).val());
+  });
+  return Number(totalAmount);
+}
+
+//Выводим итоговую стоимость стартового положения ползунков
+totalPrice.textContent = getTotalAmount();
+
+
+
+
+
+
