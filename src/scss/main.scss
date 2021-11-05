@@ -1108,12 +1108,12 @@ body.loaded .header {
 }
 
 .calculations {
-    padding: 0 7.5vw 140px;
+    padding: 0 7.5vw 4vw;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: 40%;
     // z-index: 10;
 }
 .calculations__ranges,
@@ -1128,7 +1128,7 @@ body.loaded .header {
     font-family: PT Serif Caption;
     font-style: normal;
     font-weight: normal;
-    font-size: 33px;
+    font-size: 1.7vw;
     line-height: 120%;
     color: #ffffff;
 }
@@ -1137,7 +1137,7 @@ body.loaded .header {
     font-family: PT Serif Caption;
     font-style: normal;
     font-weight: normal;
-    font-size: 33px;
+    font-size: 1.7vw;
     line-height: 120%;
     color: #ffffff;
     display: flex;
@@ -1168,7 +1168,7 @@ body.loaded .header {
         font-family: PT Serif Caption;
         font-style: normal;
         font-weight: normal;
-        font-size: 25px;
+        font-size: 1.4vw;
         line-height: 33px;
         color: #ffffff;
         margin-bottom: -20px;
@@ -1247,8 +1247,296 @@ body.loaded .header {
 .range__analiz,
 .range__structura,
 .range__programirovanie {
-    margin-bottom: 28px;
+    margin-bottom: 0.5vw;
 }
+
+.visualization {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.visualization__bg {
+    z-index: -1;
+    padding: 0 2vw;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    svg {
+        position: absolute;
+        bottom: 2.2vw;
+        left: 2vw;
+        width: 96%;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+.diagram {
+    width: 100%;
+    position: relative;
+    height: 60%;
+    display: flex;
+    align-items: center;
+}
+
+.stages {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 7.5vw;
+}
+.stages__studia,
+.stages__klient {
+    position: absolute;
+    font-family: PT Serif Caption;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.8vw;
+    line-height: 130%;
+    color: #ffffff;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.stages__studia {
+    top: -2vw;
+}
+.stages__klient {
+    bottom: -2vw;
+}
+
+.stage__desc {
+    z-index: 5;
+    position: absolute;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -51%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+        font-family: PT Serif Caption;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1.15vw;
+        line-height: 130%;
+        color: #ffffff;
+        font-weight: 400;
+    }
+}
+.stages__line {
+    position: absolute;
+    height: 1.5vw;
+    left: 1.3vw;
+    right: 1.3vw;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.19;
+    background-color: #fff;
+}
+
+.analiz__stage,
+.struktura__stage,
+.programovanie__stage,
+.promovanie__stage {
+    position: relative;
+    border-radius: 50%;
+    width: 21.25vw;
+    height: 21.25vw;
+}
+
+.analiz__stage {
+    background: hsla(112, 100%, 35%, 0.3);
+}
+.struktura__stage {
+    background: rgba(229, 255, 63, 0.3);
+}
+.programovanie__stage {
+    background: rgba(201, 50, 0, 0.3);
+}
+
+.promovanie__stage {
+    background: rgba(0, 56, 223, 0.3);
+}
+
+.wsparcie__stage,
+.spotkanie__stage {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6.5vw;
+    height: 6.5vw;
+    border-radius: 50%;
+    .stage__desc {
+        top: 60%;
+    }
+}
+.spotkanie__stage {
+    left: 2vw;
+    background: rgba(116, 189, 0, 0.8);
+}
+.wsparcie__stage {
+    right: 2vw;
+    background: rgba(136, 0, 255, 0.56);
+}
+
+.analiz__zapoznania,
+.analiz__wyznaczanie_celi,
+.analiz__wyznaczanie_zadan,
+.analiz__okreszlenia_celow,
+.analiz__wyjatkowe_elementy {
+    border-radius: 50%;
+    position: absolute;
+    background: rgba(24, 180, 0, 0.3);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.analiz__zapoznania {
+    left: 17%;
+    width: 6vw;
+    height: 6vw;
+}
+.analiz__wyznaczanie_celi {
+    left: 47.5%;
+    width: 7vw;
+    height: 7vw;
+}
+.analiz__wyznaczanie_zadan {
+    left: 81.5%;
+    width: 7.5vw;
+    height: 7.5vw;
+}
+.analiz__okreszlenia_celow {
+    background: rgba(24, 180, 0, 0.6);
+    left: 23%;
+    width: 7vw;
+    height: 7vw;
+}
+.analiz__wyjatkowe_elementy {
+    background: rgba(24, 180, 0, 0.7);
+    left: 81.5%;
+    width: 7.8vw;
+    height: 7.8vw;
+    opacity: 0.2;
+}
+
+.struktura__kontent_graficzny,
+.struktura__strona_glowna,
+.struktura__kontent_tekstowy,
+.struktura__strony_wenetrzne {
+    border-radius: 50%;
+    position: absolute;
+    background: rgba(229, 255, 63, 0.4);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.struktura__kontent_graficzny {
+    left: 15%;
+    width: 6.2vw;
+    height: 6.2vw;
+}
+.struktura__strona_glowna {
+    left: 49.5%;
+    width: 6.3vw;
+    height: 6.3vw;
+}
+.struktura__kontent_tekstowy {
+    left: 84.5%;
+    width: 6.5vw;
+    height: 6.5vw;
+}
+
+.struktura__strony_wenetrzne {
+    left: 32%;
+    width: 8.3vw;
+    height: 8.3vw;
+    opacity: 0.2;
+}
+
+.programovanie__strony_glownej,
+.programovanie__testowanie,
+.programovanie__stron_wewnetrznych {
+    border-radius: 50%;
+    position: absolute;
+    background: rgba(201, 50, 0, 0.4);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.programovanie__strony_glownej {
+    left: 24%;
+    width: 7.7vw;
+    height: 7.7vw;
+}
+.programovanie__testowanie {
+    left: 78%;
+    width: 7vw;
+    height: 7vw;
+}
+.programovanie__stron_wewnetrznych {
+    left: 40%;
+    width: 7.8vw;
+    height: 7.8vw;
+    opacity: 0.2;
+}
+
+.promovanie__uruchomienie_strony,
+.promovanie__seo_optymizacja,
+.promovanie__smm,
+.promovanie__pr {
+    border-radius: 50%;
+    position: absolute;
+    background: rgba(0, 56, 223, 0.3);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.promovanie__uruchomienie_strony {
+    left: 21%;
+    width: 4.6vw;
+    height: 4.6vw;
+}
+
+.promovanie__seo_optymizacja {
+    left: 52%;
+    width: 7vw;
+    height: 7vw;
+}
+.promovanie__smm {
+    background: rgba(136, 0, 255, 0.56);
+    left: 68%;
+    width: 6.5vw;
+    height: 6.5vw;
+    opacity: 0.2;
+}
+.promovanie__pr {
+    background: rgba(136, 0, 255, 0.56);
+    left: 86%;
+    width: 7.3vw;
+    height: 7.3vw;
+    opacity: 0.2;
+}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 @media (max-width: 1500.98px) {
     .step__title {
