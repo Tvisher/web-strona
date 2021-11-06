@@ -508,8 +508,9 @@ let promovanieRange = $("#PROMOWANIE").data("ionRangeSlider");
 $('.calculations__ranges input').change(function () {
   const inputName = this.id;
   const InputValue = Number($(this).val());
-  // console.log(`Значение инпута ${inputName} : ${InputValue}`);
   totalPrice.textContent = getTotalAmount();
+  updateDiagramSize(inputName, InputValue);
+  console.log(inputName);
 });
 
 //Функция подсчёта итоговой стоимости
@@ -523,6 +524,472 @@ function getTotalAmount() {
 
 //Выводим итоговую стоимость стартового положения ползунков
 totalPrice.textContent = getTotalAmount();
+
+
+//Сферы сеции анализ
+const analizZapoznania = document.querySelector('.analiz__zapoznania'),
+  analizWyznaczanieCeli = document.querySelector('.analiz__wyznaczanie_celi'),
+  analizWyznaczanieZadan = document.querySelector('.analiz__wyznaczanie_zadan'),
+  analizOkreszleniaCelow = document.querySelector('.analiz__okreszlenia_celow'),
+  analizWyjatkoweElementy = document.querySelector('.analiz__wyjatkowe_elementy'),
+  analizWizjaPozycjonowanie = document.querySelector('.analiz__wizja_pozycjonowanie');
+
+
+// Сферы секции структура
+
+const strukturaKontentGraficzny = document.querySelector('.struktura__kontent_graficzny'),
+  strukturaStronaGlowna = document.querySelector('.struktura__strona_glowna'),
+  strukturaKontentTekstowy = document.querySelector('.struktura__kontent_tekstowy'),
+  strukturaStronyWenetrzne = document.querySelector('.struktura__strony_wenetrzne');
+
+
+
+
+
+
+
+function updateDiagramSize(inputName, InputValue) {
+  if (inputName === 'ANALIZA') {
+    let analizaRangeIndex = analizaValues.findIndex(value => value === InputValue);
+    switch (analizaRangeIndex) {
+      case 1:
+        Object.assign(analizZapoznania.style, {
+          width: '6vw',
+          height: '6vw',
+        });
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '7vw',
+          height: '7vw',
+        });
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '7.5vw',
+          height: '7.5vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 2:
+        Object.assign(analizZapoznania.style, {
+          width: '7.3vw',
+          height: '7.3vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '8.3vw',
+          height: '8.3vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '8.5vw',
+          height: '8.5vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 3:
+        Object.assign(analizZapoznania.style, {
+          width: '8vw',
+          height: '8vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '9.4vw',
+          height: '9.4vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 4:
+        Object.assign(analizZapoznania.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '9.6vw',
+          height: '9.6vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '9.9vw',
+          height: '9.9vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 5:
+        Object.assign(analizZapoznania.style, {
+          width: '10vw',
+          height: '10vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '10.2vw',
+          height: '10.2vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '10.4vw',
+          height: '10.4vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '7vw',
+          height: '7vw',
+          opacity: '1'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 6:
+        Object.assign(analizZapoznania.style, {
+          width: '12.2vw',
+          height: '12.2vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '12.2vw',
+          height: '12.2vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '12.1vw',
+          height: '12.1vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '9.4vw',
+          height: '9.4vw',
+          opacity: '1'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+          opacity: '1'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 7:
+        Object.assign(analizZapoznania.style, {
+          width: '12.8vw',
+          height: '12.8vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '12.8vw',
+          height: '12.8vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '12.5vw',
+          height: '12.5vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '10.4vw',
+          height: '10.4vw',
+          opacity: '1'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+          opacity: '1'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 8:
+        Object.assign(analizZapoznania.style, {
+          width: '13.8vw',
+          height: '13.8vw',
+        });
+
+        Object.assign(analizWyznaczanieCeli.style, {
+          width: '13.5vw',
+          height: '13.5vw',
+        });
+
+        Object.assign(analizWyznaczanieZadan.style, {
+          width: '13vw',
+          height: '13vw',
+        });
+        Object.assign(analizOkreszleniaCelow.style, {
+          width: '12.5vw',
+          height: '12.5vw',
+          opacity: '1'
+        });
+        Object.assign(analizWyjatkoweElementy.style, {
+          width: '11vw',
+          height: '11vw',
+          opacity: '1'
+        });
+        Object.assign(analizWizjaPozycjonowanie.style, {
+          width: '8.2vw',
+          height: '8.2vw',
+          opacity: '1'
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  if (inputName === 'STRUKTURA') {
+    let strukturaRangeIndex = struktutraValues.findIndex(value => value === InputValue);
+    switch (strukturaRangeIndex) {
+      case 1:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '6.2vw',
+          height: '6.2vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '6.3vw',
+          height: '6.3vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '6.5vw',
+          height: '6.5vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 2:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '6.8vw',
+          height: '6.8vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '7.3vw',
+          height: '7.3vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0'
+        });
+        break;
+      case 3:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '8.1vw',
+          height: '8.1vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '8.3vw',
+          height: '8.3vw',
+          opacity: '1'
+        });
+        break;
+      case 4:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '8.3vw',
+          height: '8.3vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '9.9vw',
+          height: '9.9vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '8.6vw',
+          height: '8.6vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '8.9vw',
+          height: '8.9vw',
+          opacity: '1'
+        });
+        break;
+      case 5:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '10.4vw',
+          height: '10.4vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '11.2vw',
+          height: '11.2vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '9.6vw',
+          height: '9.6vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '9.4vw',
+          height: '9.4vw',
+          opacity: '1'
+        });
+        break;
+      case 6:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '14.1vw',
+          height: '14.1vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '13.9vw',
+          height: '13.9vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '12vw',
+          height: '12vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '11.2vw',
+          height: '11.2vw',
+          opacity: '1'
+        });
+        break;
+      case 7:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '14.8vw',
+          height: '14.8vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '14.3vw',
+          height: '14.3vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '12.8vw',
+          height: '12.8vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '11.7vw',
+          height: '11.7vw',
+          opacity: '1'
+        });
+        break;
+      case 8:
+        Object.assign(strukturaKontentGraficzny.style, {
+          width: '15.6vw',
+          height: '15.6vw',
+        });
+        Object.assign(strukturaStronaGlowna.style, {
+          width: '15.6vw',
+          height: '15.6vw',
+        });
+        Object.assign(strukturaKontentTekstowy.style, {
+          width: '14.1vw',
+          height: '14.1vw',
+        });
+        Object.assign(strukturaStronyWenetrzne.style, {
+          width: '12.8vw',
+          height: '12.8vw',
+          opacity: '1'
+        });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

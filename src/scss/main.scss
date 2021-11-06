@@ -1350,6 +1350,7 @@ body.loaded .header {
 }
 
 .analiz__stage {
+    z-index: 2;
     background: hsla(112, 100%, 35%, 0.3);
 }
 .struktura__stage {
@@ -1377,6 +1378,7 @@ body.loaded .header {
     }
 }
 .spotkanie__stage {
+    z-index: 1;
     left: 2vw;
     background: rgba(116, 189, 0, 0.8);
 }
@@ -1389,7 +1391,9 @@ body.loaded .header {
 .analiz__wyznaczanie_celi,
 .analiz__wyznaczanie_zadan,
 .analiz__okreszlenia_celow,
-.analiz__wyjatkowe_elementy {
+.analiz__wyjatkowe_elementy,
+.analiz__wizja_pozycjonowanie {
+    transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
     border-radius: 50%;
     position: absolute;
     background: rgba(24, 180, 0, 0.3);
@@ -1416,19 +1420,28 @@ body.loaded .header {
     left: 23%;
     width: 7vw;
     height: 7vw;
+    opacity: 0;
 }
 .analiz__wyjatkowe_elementy {
     background: rgba(24, 180, 0, 0.7);
     left: 81.5%;
     width: 7.8vw;
     height: 7.8vw;
-    opacity: 0.2;
+    opacity: 0;
+}
+.analiz__wizja_pozycjonowanie {
+    background: rgba(0, 63, 14, 0.5);
+    left: 17%;
+    width: 8.2vw;
+    height: 8.2vw;
+    opacity: 0;
 }
 
 .struktura__kontent_graficzny,
 .struktura__strona_glowna,
 .struktura__kontent_tekstowy,
 .struktura__strony_wenetrzne {
+    transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
     border-radius: 50%;
     position: absolute;
     background: rgba(229, 255, 63, 0.4);
@@ -1455,12 +1468,13 @@ body.loaded .header {
     left: 32%;
     width: 8.3vw;
     height: 8.3vw;
-    opacity: 0.2;
+    opacity: 0;
 }
 
 .programovanie__strony_glownej,
 .programovanie__testowanie,
 .programovanie__stron_wewnetrznych {
+    transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
     border-radius: 50%;
     position: absolute;
     background: rgba(201, 50, 0, 0.4);
@@ -1488,6 +1502,7 @@ body.loaded .header {
 .promovanie__seo_optymizacja,
 .promovanie__smm,
 .promovanie__pr {
+    transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
     border-radius: 50%;
     position: absolute;
     background: rgba(0, 56, 223, 0.3);
