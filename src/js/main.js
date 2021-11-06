@@ -536,14 +536,22 @@ const analizZapoznania = document.querySelector('.analiz__zapoznania'),
 
 
 // Сферы секции структура
-
 const strukturaKontentGraficzny = document.querySelector('.struktura__kontent_graficzny'),
   strukturaStronaGlowna = document.querySelector('.struktura__strona_glowna'),
   strukturaKontentTekstowy = document.querySelector('.struktura__kontent_tekstowy'),
   strukturaStronyWenetrzne = document.querySelector('.struktura__strony_wenetrzne');
 
+// Сферы секции програмирование
+const programovanieStronyGlownej = document.querySelector('.programovanie__strony_glownej'),
+  programovanieTestowanie = document.querySelector('.programovanie__testowanie'),
+  programovanieStronWewnetrznych = document.querySelector('.programovanie__stron_wewnetrznych');
 
-
+// Сферы секции продвижение
+const promovanieUruchomienieStrony = document.querySelector('.promovanie__uruchomienie_strony'),
+  promovanieSeoOptymizacja = document.querySelector('.promovanie__seo_optymizacja'),
+  promovanieSmm = document.querySelector('.promovanie__smm'),
+  promovaniePr = document.querySelector('.promovanie__pr'),
+  promovanieDoskonalenie = document.querySelector('.promovanie__doskonalenie');
 
 
 
@@ -957,12 +965,344 @@ function updateDiagramSize(inputName, InputValue) {
           opacity: '1'
         });
         break;
-
       default:
         break;
     }
   }
-
+  if (inputName === 'PROGRAMOWANIE') {
+    let programirovanieRangeIndex = programirowanieValues.findIndex(value => value === InputValue);
+    switch (programirovanieRangeIndex) {
+      case 1:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '7.7vw',
+          height: '7.7vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '7vw',
+          height: '7vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 2:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '8.3vw',
+          height: '8.3vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 3:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '8.6vw',
+          height: '8.6vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '8.1vw',
+          height: '8.1vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+          opacity: '1',
+        });
+        break;
+      case 4:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '9.6vw',
+          height: '9.6vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '8.6vw',
+          height: '8.6vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '8.9vw',
+          height: '8.9vw',
+          opacity: '1',
+        });
+        break;
+      case 5:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '11.7vw',
+          height: '11.7vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '10.4vw',
+          height: '10.4vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '10.9vw',
+          height: '10.9vw',
+          opacity: '1',
+        });
+        break;
+      case 6:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '13.5vw',
+          height: '13.5vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '12.2vw',
+          height: '12.2vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '11.7vw',
+          height: '11.7vw',
+          opacity: '1',
+        });
+        break;
+      case 7:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '14.3vw',
+          height: '14.3vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '13vw',
+          height: '13vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '12.5vw',
+          height: '12.5vw',
+          opacity: '1',
+        });
+        break;
+      case 8:
+        Object.assign(programovanieStronyGlownej.style, {
+          width: '15.4vw',
+          height: '15.4vw',
+        });
+        Object.assign(programovanieTestowanie.style, {
+          width: '14.1vw',
+          height: '14.1vw',
+        });
+        Object.assign(programovanieStronWewnetrznych.style, {
+          width: '13.3vw',
+          height: '13.3vw',
+          opacity: '1',
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  if (inputName === 'PROMOWANIE') {
+    let promowanieRangeIndex = promovanieValues.findIndex(value => value === InputValue);
+    switch (promowanieRangeIndex) {
+      case 1:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '4.6vw',
+          height: '4.6vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '7vw',
+          height: '7vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 2:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '5.2vw',
+          height: '5.2vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 3:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '6.2vw',
+          height: '6.2vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '8.9vw',
+          height: '8.9vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '6.5vw',
+          height: '6.5vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 4:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '6.2vw',
+          height: '6.2vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '9.6vw',
+          height: '9.6vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 5:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '6.8vw',
+          height: '6.8vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '10.9vw',
+          height: '10.9vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '8.9vw',
+          height: '8.9vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 6:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '7.3vw',
+          height: '7.3vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '12.5vw',
+          height: '12.5vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '9.9vw',
+          height: '9.9vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '7.3vw',
+          height: '7.3vw',
+          opacity: '1',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
+      case 7:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '7.8vw',
+          height: '7.8vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '14.1vw',
+          height: '14.1vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '12vw',
+          height: '12vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '9.6vw',
+          height: '9.6vw',
+          opacity: '1',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '7.5vw',
+          height: '7.5vw',
+          opacity: '1',
+        });
+        break;
+      case 8:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '8.3vw',
+          height: '8.3vw',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '16.1vw',
+          height: '16.1vw',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '13.5vw',
+          height: '13.5vw',
+          opacity: '1',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '10.4vw',
+          height: '10.4vw',
+          opacity: '1',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '9.1vw',
+          height: '9.1vw',
+          opacity: '1',
+        });
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 
