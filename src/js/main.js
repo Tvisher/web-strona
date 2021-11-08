@@ -50,8 +50,7 @@ const pageSlider = new Swiper('.page', {
   on: {
     // Инициализация 
     init: function () {
-
-
+      hideLogo()
     },
     afterInit: function () {
       document.body.classList.add('loaded');
@@ -69,6 +68,7 @@ const pageSlider = new Swiper('.page', {
           servicesSlider.disable();
         }
       }
+      hideLogo();
     },
     slideChangeTransitionEnd: function () {
       if (!pageSlider.slides[pageSlider.realIndex].querySelector('.services')) {
@@ -83,6 +83,17 @@ const pageSlider = new Swiper('.page', {
   }
 });
 pageSlider.init();
+
+//Функция для скрытия лого в шапке сайта
+function hideLogo() {
+  const headerLogo = document.querySelector('.header__logo');
+  if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization')) {
+    headerLogo.style.opacity = '0';
+  }
+  else {
+    headerLogo.style.opacity = '1';
+  }
+}
 
 const portfilio = new Swiper(".portfolio", {
   centeredSlides: true,
@@ -410,11 +421,18 @@ const navigationMenu = document.querySelector('.site__nav');
 const navigationMenuVideoBg = navigationMenu.querySelector('.video_bg');
 burgerBtn.addEventListener('click', openNavigationMenu);
 function openNavigationMenu(e) {
+  const headerLogo = document.querySelector('.header__logo');
   if (!this.classList.contains('active')) {
+    setTimeout(() => {
+      headerLogo.style.opacity = '1';
+    }, 300);
     navigationMenuVideoBg.play();
     this.classList.add('active');
     navigationMenu.classList.add('active');
   } else {
+    if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization')) {
+      headerLogo.style.opacity = '0';
+    }
     setTimeout(() => {
       navigationMenuVideoBg.pause();
     }, 600);
@@ -462,17 +480,18 @@ briefForm.addEventListener('submit', (e) => {
 
 
 
-
+//Добавляем в каждое поле параметров калькулятора цифру 0 для корректной настройки плагина ползунков
 for (let key in window.calculatorParameters) {
   window.calculatorParameters[key].unshift(0);
   window.calculatorParameters[key].forEach(price => Number(price));
 }
-// Параметры калькулятора
+// Деструктурируем параметры калькулятора
 const { analizaValues, struktutraValues, programirowanieValues, promovanieValues } = window.calculatorParameters;
+
 // Span для вывода итоговой стоимости
 const totalPrice = document.querySelector('#priceValue');
 
-//Зелёный инпут
+//Зелёный ползунок
 const ANALIZA = $("#ANALIZA");
 ANALIZA.ionRangeSlider({
   from_min: 1,
@@ -480,7 +499,7 @@ ANALIZA.ionRangeSlider({
 });
 let analizaRange = $("#ANALIZA").data("ionRangeSlider");
 
-//Жёлтый инпут
+//Жёлтый ползунок
 const STRUKTURA = $("#STRUKTURA");
 STRUKTURA.ionRangeSlider({
   from_min: 1,
@@ -488,7 +507,7 @@ STRUKTURA.ionRangeSlider({
 });
 let strukturaRange = $("#STRUKTURA").data("ionRangeSlider");
 
-//Красный инпут
+//Красный ползунок
 const PROGRAMOWANIE = $("#PROGRAMOWANIE");
 PROGRAMOWANIE.ionRangeSlider({
   from_min: 1,
@@ -496,50 +515,141 @@ PROGRAMOWANIE.ionRangeSlider({
 });
 let programirowanieRange = $("#PROGRAMOWANIE").data("ionRangeSlider");
 
-//Синий инпут
+//Синий ползунок
 const PROMOWANIE = $("#PROMOWANIE");
 PROMOWANIE.ionRangeSlider({
-  from_min: 1,
+  from_min: 0,
   values: promovanieValues,
 });
 let promovanieRange = $("#PROMOWANIE").data("ionRangeSlider");
 
-//слежка за событием изменения инпутов
+//Слежка за событием изменения ползунков
 $('.calculations__ranges input').change(function () {
   const inputName = this.id;
   const InputValue = Number($(this).val());
   totalPrice.textContent = getTotalAmount();
   updateDiagramSize(inputName, InputValue);
-  console.log(inputName);
 });
 
 //Функция подсчёта итоговой стоимости
 function getTotalAmount() {
+  let percent = 1;
+  const calculationsTypes = document.querySelectorAll('.calculations__type');
+  for (let index = 0; index < calculationsTypes.length; index++) {
+    const calculationsTypeBtn = calculationsTypes[index];
+    if (!calculationsTypeBtn.classList.contains('active')) {
+      continue;
+    }
+    if (calculationsTypeBtn.dataset.type === 'landing') {
+      percent = 1;
+    }
+    if (calculationsTypeBtn.dataset.type === 'website') {
+      percent = 2.3;
+    }
+    if (calculationsTypeBtn.dataset.type === 'e-shop') {
+      percent = 2.6;
+    }
+  }
   let totalAmount = 0;
   $('.calculations__ranges input').each(function () {
     totalAmount += Number($(this).val());
   });
-  return Number(totalAmount);
+  return Math.round(Number(totalAmount * percent));
 }
 
-//Выводим итоговую стоимость стартового положения ползунков
-totalPrice.textContent = getTotalAmount();
+// Отрабатываем событие выбора типа проекта
+document.querySelector('.calculations__types').addEventListener('click', function (e) {
+  const btn = e.target.closest('.calculations__type');
+  if (!btn) {
+    return;
+  }
+  let activeBtn = document.querySelector('.calculations__type.active');
+  activeBtn.classList.remove('active');
+  btn.classList.add('active');
+  totalPrice.textContent = getTotalAmount();
+  $('.calculations__level[data-type="classical"]').click();
+});
 
+// Отрабатываем событие выбора уровня проекта
+document.querySelector('.calculations__levels').addEventListener('click', function (e) {
+  const btn = e.target.closest('.calculations__level');
+  if (!btn) {
+    return;
+  }
+  let activeBtn = document.querySelector('.calculations__level.active');
+  activeBtn.classList.remove('active');
+  btn.classList.add('active');
+  const btnType = btn.dataset.type;
+  switch (btnType) {
+    case 'classical':
+      analizaRange.update({
+        from: 4
+      });
+      strukturaRange.update({
+        from: 5
+      });
+      programirowanieRange.update({
+        from: 4
+      });
+      promovanieRange.update({
+        from: 3
+      });
+      break;
+    case 'high':
+      analizaRange.update({
+        from: 6
+      });
+      strukturaRange.update({
+        from: 5
+      });
+      programirowanieRange.update({
+        from: 6
+      });
+      promovanieRange.update({
+        from: 6
+      });
+      break;
+    case 'special':
+      analizaRange.update({
+        from: 8
+      });
+      strukturaRange.update({
+        from: 8
+      });
+      programirowanieRange.update({
+        from: 8
+      });
+      promovanieRange.update({
+        from: 8
+      });
+      break;
+    default:
+      break;
+  }
+});
+
+
+//Выводим итоговую стоимость стартового положения ползунков в спан
+totalPrice.textContent = getTotalAmount();
 
 //Сферы сеции анализ
 const analizZapoznania = document.querySelector('.analiz__zapoznania'),
   analizWyznaczanieCeli = document.querySelector('.analiz__wyznaczanie_celi'),
   analizWyznaczanieZadan = document.querySelector('.analiz__wyznaczanie_zadan'),
   analizOkreszleniaCelow = document.querySelector('.analiz__okreszlenia_celow'),
+  analizOkreszleniaCelowDescKlient = document.querySelector('.analiz__okreszlenia_celow_desc.klient'),
   analizWyjatkoweElementy = document.querySelector('.analiz__wyjatkowe_elementy'),
-  analizWizjaPozycjonowanie = document.querySelector('.analiz__wizja_pozycjonowanie');
-
+  analizWyjatkoweElementyDescKlient = document.querySelector('.analiz__wyjatkowe_elementy_desc.klient'),
+  analizWizjaPozycjonowanie = document.querySelector('.analiz__wizja_pozycjonowanie'),
+  analizWizjaPozycjonowanieDescKlient = document.querySelector('.analiz__wizja_pozycjonowanie_desc.klient');
 
 // Сферы секции структура
 const strukturaKontentGraficzny = document.querySelector('.struktura__kontent_graficzny'),
   strukturaStronaGlowna = document.querySelector('.struktura__strona_glowna'),
   strukturaKontentTekstowy = document.querySelector('.struktura__kontent_tekstowy'),
-  strukturaStronyWenetrzne = document.querySelector('.struktura__strony_wenetrzne');
+  strukturaStronyWenetrzne = document.querySelector('.struktura__strony_wenetrzne'),
+  strukturaStronyWenetrzneDescStudia = document.querySelector('.struktura__strony_wenetrzne_desc.studia')
+  ;
 
 // Сферы секции програмирование
 const programovanieStronyGlownej = document.querySelector('.programovanie__strony_glownej'),
@@ -552,9 +662,6 @@ const promovanieUruchomienieStrony = document.querySelector('.promovanie__urucho
   promovanieSmm = document.querySelector('.promovanie__smm'),
   promovaniePr = document.querySelector('.promovanie__pr'),
   promovanieDoskonalenie = document.querySelector('.promovanie__doskonalenie');
-
-
-
 
 function updateDiagramSize(inputName, InputValue) {
   if (inputName === 'ANALIZA') {
@@ -578,16 +685,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '0';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '0';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 2:
         Object.assign(analizZapoznania.style, {
@@ -609,16 +719,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '0';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '0';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 3:
         Object.assign(analizZapoznania.style, {
@@ -640,16 +753,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '0';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '0';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 4:
         Object.assign(analizZapoznania.style, {
@@ -671,16 +787,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '0';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '0';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 5:
         Object.assign(analizZapoznania.style, {
@@ -702,16 +821,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '7vw',
           opacity: '1'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '1';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '0';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 6:
         Object.assign(analizZapoznania.style, {
@@ -733,16 +855,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '9.4vw',
           opacity: '1'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '1';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '7.8vw',
           height: '7.8vw',
           opacity: '1'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '1';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 7:
         Object.assign(analizZapoznania.style, {
@@ -764,16 +889,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '10.4vw',
           opacity: '1'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '1';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '9.1vw',
           height: '9.1vw',
           opacity: '1'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '1';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '0';
         break;
       case 8:
         Object.assign(analizZapoznania.style, {
@@ -795,16 +923,19 @@ function updateDiagramSize(inputName, InputValue) {
           height: '12.5vw',
           opacity: '1'
         });
+        analizOkreszleniaCelowDescKlient.style.opacity = '1';
         Object.assign(analizWyjatkoweElementy.style, {
           width: '11vw',
           height: '11vw',
           opacity: '1'
         });
+        analizWyjatkoweElementyDescKlient.style.opacity = '1';
         Object.assign(analizWizjaPozycjonowanie.style, {
           width: '8.2vw',
           height: '8.2vw',
           opacity: '1'
         });
+        analizWizjaPozycjonowanieDescKlient.style.opacity = '1';
         break;
       default:
         break;
@@ -831,6 +962,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '0';
         break;
       case 2:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -850,6 +982,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '0';
         break;
       case 3:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -869,6 +1002,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '8.3vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       case 4:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -888,6 +1022,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '8.9vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       case 5:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -907,6 +1042,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '9.4vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       case 6:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -926,6 +1062,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '11.2vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       case 7:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -945,6 +1082,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '11.7vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       case 8:
         Object.assign(strukturaKontentGraficzny.style, {
@@ -964,6 +1102,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '12.8vw',
           opacity: '1'
         });
+        strukturaStronyWenetrzneDescStudia.style.opacity = '1';
         break;
       default:
         break;
@@ -1099,14 +1238,43 @@ function updateDiagramSize(inputName, InputValue) {
   if (inputName === 'PROMOWANIE') {
     let promowanieRangeIndex = promovanieValues.findIndex(value => value === InputValue);
     switch (promowanieRangeIndex) {
+      case 0:
+        Object.assign(promovanieUruchomienieStrony.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieSeoOptymizacja.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieSmm.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovaniePr.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        Object.assign(promovanieDoskonalenie.style, {
+          width: '0vw',
+          height: '0vw',
+          opacity: '0',
+        });
+        break;
       case 1:
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '4.6vw',
           height: '4.6vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '7vw',
           height: '7vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '0vw',
@@ -1128,10 +1296,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '5.2vw',
           height: '5.2vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '7.8vw',
           height: '7.8vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '0vw',
@@ -1153,10 +1323,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '6.2vw',
           height: '6.2vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '8.9vw',
           height: '8.9vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '6.5vw',
@@ -1178,10 +1350,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '6.2vw',
           height: '6.2vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '9.6vw',
           height: '9.6vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '7.8vw',
@@ -1203,10 +1377,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '6.8vw',
           height: '6.8vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '10.9vw',
           height: '10.9vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '8.9vw',
@@ -1228,10 +1404,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '7.3vw',
           height: '7.3vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '12.5vw',
           height: '12.5vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '9.9vw',
@@ -1253,10 +1431,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '7.8vw',
           height: '7.8vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '14.1vw',
           height: '14.1vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '12vw',
@@ -1278,10 +1458,12 @@ function updateDiagramSize(inputName, InputValue) {
         Object.assign(promovanieUruchomienieStrony.style, {
           width: '8.3vw',
           height: '8.3vw',
+          opacity: '1',
         });
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '16.1vw',
           height: '16.1vw',
+          opacity: '1',
         });
         Object.assign(promovanieSmm.style, {
           width: '13.5vw',
