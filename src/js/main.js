@@ -1,10 +1,40 @@
 
+//Технически переменные
+const headerLogo = document.querySelector('.header__logo');
+const mainPagination = document.querySelector('.page__pagination');
+const diagramPage = document.querySelector('.visualization');
+const diagramContent = diagramPage.querySelector('.calculations');
+const diagramPageWrapper = diagramPage.parentNode;
+
+
+//Переменныe для перемещиня элементов калькулятора
+const parent_original = document.querySelector('.calculations');
+const parent = document.querySelector('.calculations__footer');
+const item = document.querySelector('.calculations__levels');
+//Функция для перемещиня элементов калькулятора
+function move() {
+  const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  if (viewport_width <= 579) {
+    if (!item.classList.contains('done')) {
+      parent.insertBefore(item, parent.children[1]);
+      item.classList.add('done');
+    }
+  } else {
+    if (item.classList.contains('done')) {
+      parent_original.insertBefore(item, parent_original.children[3]);
+      item.classList.remove('done');
+    }
+  }
+}
+//Вызываем функцию
+move();
+//Главный слайдер сайта
 const pageSlider = new Swiper('.page', {
   //Свои классы
   wrapperClass: "page__wrapper",
   slideClass: "page__screen",
   slidesPerGroup: 1,
-  noSwipingClass: 'calculations__ranges',
+  noSwipingClass: 'no-swipe',
   // Вертикальный слайдер
   direction: 'vertical',
   parallax: true,
@@ -31,6 +61,14 @@ const pageSlider = new Swiper('.page', {
   watchOverflow: true,
   //Скорость
   speed: 1100,
+  //Обновить слайдер при изменении элементов слайдера
+  observer: true,
+
+  //Обновить слайдер при изменении родительских элементов слайдера
+  observeParents: true,
+
+  //Обновить слайдер при изменении дочерних элементов слайдера
+  observeSlideChildren: true,
   //Навигация,буллеты,текущее положение, прогрессбар
   pagination: {
     el: '.page__pagination',
@@ -50,7 +88,7 @@ const pageSlider = new Swiper('.page', {
   on: {
     // Инициализация 
     init: function () {
-      hideLogo()
+      // checkWindowSize()
     },
     afterInit: function () {
       document.body.classList.add('loaded');
@@ -68,9 +106,18 @@ const pageSlider = new Swiper('.page', {
           servicesSlider.disable();
         }
       }
+      if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization')) {
+        mainPagination.classList.add('move')
+        document.querySelector('.footer').style.width = "30%";
+
+      } else {
+        mainPagination.classList.remove('move')
+        document.querySelector('.footer').style.width = "100%";
+      }
       hideLogo();
     },
     slideChangeTransitionEnd: function () {
+      checkWindowSize();
       if (!pageSlider.slides[pageSlider.realIndex].querySelector('.services')) {
         servicesSlider.disable();
       } else {
@@ -79,22 +126,168 @@ const pageSlider = new Swiper('.page', {
       }
     },
     resize: function () {
+      checkWindowSize();
+      move();
+      hideLogo();
     }
   }
 });
 pageSlider.init();
 
-//Функция для скрытия лого в шапке сайта
-function hideLogo() {
-  const headerLogo = document.querySelector('.header__logo');
-  if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization')) {
-    headerLogo.style.opacity = '0';
+
+// Слайдер с текстовыми блоками
+const descriptionModalElement = document.querySelector('.description_modal');
+const descriptionModalWrapper = document.querySelector('.description_modal__wrapper');
+const descriptionModal = new Swiper('.description_modal', {
+  //Свои классы
+  wrapperClass: "description_modal__wrapper",
+  slideClass: "description_modal__sectoion",
+  slidesPerGroup: 1,
+  noSwipingClass: 'no-swipe',
+  // Вертикальный слайдер
+  direction: 'vertical',
+  // Колличество слайдев для показа
+  slidesPerView: 'auto',
+
+  init: false,
+  //Управление клавиатурой
+  keyboard: {
+    //Вкл/Выкл
+    enable: true,
+    //Вкл/Выкл только когда слайдер в пределах вьюпорта
+    onlyInViewport: true,
+    //Вкл/Выкл упрапвление клавишами pageUp pageDown
+    pageUpDown: true,
+  },
+  mousewheel: {
+    // Чувствительность колеса мыши
+    sensitivity: 0.4,
+    //Класс обьекта на котором буддет срабатывать прокрутка мышью
+    eventsTarget: '.description_modal__wrapper',
+  },
+  touchEventsTarget: '.description_modal__wrapper',
+  touchRatio: 1,
+  //Отключаем функционал если слайдов меньше чем нужно
+  watchOverflow: true,
+  //Обновить слайдер при изменении элементов слайдера
+  observer: true,
+
+  //Обновить слайдер при изменении родительских элементов слайдера
+  observeParents: true,
+
+  //Обновить слайдер при изменении дочерних элементов слайдера
+  observeSlideChildren: true,
+  //Скорость
+  speed: 1200,
+  //Навигация,буллеты,текущее положение, прогрессбар
+  pagination: {
+    el: '.description_modal__pagination',
+    type: 'bullets',
+    clickable: true,
+    bulletClass: 'description_modal__bullet',
+    bulletActiveClass: 'description_modal__bullet_active',
+  },
+  // Отключаем автоинициализацию
+  breakpoints: {
+    768: {
+      speed: 1600,
+      touchRatio: 0.3,
+    }
+  },
+  //События слайдера
+  on: {
+    // Инициализация 
+    init: function () {
+      setScrollType();
+    },
+    afterInit: function () {
+
+    },
+    // Смена слайда 
+    slideChange: function () {
+
+    },
+    slideChangeTransitionStart: function () {
+
+    },
+    slideChangeTransitionEnd: function () {
+
+    },
+    resize: function () {
+      setScrollType();
+      this.update()
+    }
   }
-  else {
-    headerLogo.style.opacity = '1';
+});
+descriptionModal.init();
+//Проверка помещяется ли контент в область экрана. Если нет, отключаем поэкранную прокрутку
+function setScrollType() {
+  if (descriptionModalWrapper.classList.contains('free')) {
+    descriptionModalWrapper.parentNode.classList.remove('free');
+    descriptionModalWrapper.classList.remove('free');
+    descriptionModal.params.freeMode.enabled = false;
+  }
+  for (let index = 0; index < descriptionModal.slides.length; index++) {
+    const pageSlide = descriptionModal.slides[index];
+    const pageSlideContent = pageSlide.querySelector('.section__content');
+    if (pageSlideContent) {
+      const pageSlideContentHeight = pageSlideContent.scrollHeight;
+      if (pageSlideContentHeight > window.innerHeight) {
+        descriptionModalWrapper.parentNode.classList.add('free');
+        descriptionModalWrapper.classList.add('free');
+        descriptionModal.params.freeMode.enabled = true;
+        descriptionModal.update();
+        break;
+      }
+    }
   }
 }
 
+
+//Логика работы ссылок в меню
+const navContent = document.querySelector('.nav__content');
+navContent.addEventListener('click', openDescriptionModal);
+function openDescriptionModal(e) {
+  if (!e.target.closest('a')) {
+    return;
+  }
+  e.preventDefault();
+  descriptionModalElement.classList.remove('show');
+  headerLogo.style.opacity = '1';
+
+  //Если нажали на ссылки модалки
+  const linkDataModalId = e.target.dataset.modalId;
+  if (linkDataModalId) {
+    const slideIndex = descriptionModal.slides.findIndex(item => item.id === linkDataModalId);
+    descriptionModal.slideTo(slideIndex, 100, false);
+    descriptionModalElement.classList.add('show');
+    headerLogo.style.opacity = '0';
+  }
+  // Если нажали на ссылки главной страницы
+  const linkDataMainId = e.target.dataset.mainId;
+  if (linkDataMainId) {
+    const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
+    pageSlider.slideTo(slideIndex, 100, false);
+  }
+  //Закрываем меню
+  setTimeout(() => {
+    $('.header__menu').click();
+  }, 200);
+}
+const contactsBriefBtn = document.querySelector('.contacts__brief');
+contactsBriefBtn.onclick = function (e) {
+  e.preventDefault();
+  const linkDataMainId = contactsBriefBtn.dataset.mainId;
+  const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
+  pageSlider.slideTo(slideIndex, 100, false);
+  headerLogo.style.opacity = '1';
+  descriptionModalElement.classList.remove('show');
+}
+
+
+
+
+//Слайдер секции портфолио
 const portfilio = new Swiper(".portfolio", {
   centeredSlides: true,
   slidesPerView: 2,
@@ -130,11 +323,11 @@ const portfilio = new Swiper(".portfolio", {
     slideShadows: false,
   },
   breakpoints: {
-    1025: {
+    1465: {
       slidesPerView: 6,
     },
-    576: {
-      slidesPerView: 4,
+    1025: {
+      slidesPerView: 5,
     },
     414: {
       slidesPerView: 3,
@@ -179,23 +372,38 @@ const servicesSlider = new Swiper('.services__slider', {
 });
 
 
-// function zIndexAdd() {
-//   const slides = pageSlider.slides;
-//   for (let index = 0; index < slides.length; index++) {
-//     const element = slides[index];
-//     element.style.zIndex = index + 1;
-//   }
-// }
-// zIndexAdd();
+// Техническая функция для адпативной работы секции с диаграммой
+function checkWindowSize() {
+  const windowInnerHeight = document.documentElement.clientHeight;
+  // console.log(windowInnerHeight, diagramPage.scrollHeight);
+  if (windowInnerHeight < diagramPage.scrollHeight) {
+    diagramPageWrapper.classList.add('no-swipe')
+  } else {
+    diagramPageWrapper.classList.remove('no-swipe')
+  }
+}
 
+//Функция для скрытия лого в шапке сайта
+function hideLogo() {
+  if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization') && window.innerWidth > 1024 && !document.querySelector('.header__menu.active')
+  ) {
+    headerLogo.style.opacity = '0';
+  }
+  else {
+    if (!document.querySelector('.description_modal.show')) {
+      headerLogo.style.opacity = '1';
+    }
 
+  }
+}
+
+// Логика работы секции услуг 
 const wrapper = document.querySelector('.services__wrapper');
 wrapper.addEventListener('click', clickOnSlide);
 function clickOnSlide(e) {
   !e.target.closest('services') && false;
   const activeTitleLi = titlesArr[servicesSlider.realIndex];
   const nextTitle = titlesArr[servicesSlider.realIndex + 1];
-  // const prevtTitle = titlesArr[servicesSlider.realIndex - 1];
   for (let index = 0; index < servicesSlider.realIndex; index++) {
     const prevtTitle = titlesArr[index];
     if (activeTitleLi.classList.contains('show')) {
@@ -203,7 +411,6 @@ function clickOnSlide(e) {
     } else {
       prevtTitle && prevtTitle.classList.add('prew');
     }
-
   }
   // если открыто описание
   if (activeTitleLi.classList.contains('show')) {
@@ -211,29 +418,22 @@ function clickOnSlide(e) {
     activeTitleLi.classList.remove('show');
     activeTitleLi.classList.add('unshow');
     galeryWindow.classList.remove('increase');
-    // prevtTitle && prevtTitle.classList.remove('prew');
     nextTitle && nextTitle.classList.remove('next');
     servicesSlider.enable();
     activeTitleLi.addEventListener('animationend', (e) => {
       if (activeTitleLi.classList.contains('unshow')) {
         activeTitleLi.classList.remove('unshow');
-        // pageSlider.mousewheel.enable();
         pageSlider.enable();
-        // pageSlider.allowSlidePrev = true;
-        // pageSlider.allowSlideNext = true;
       }
     }, { once: true })
   } else {
     // если описание скрыто
     pageSlider.disable();
     servicesSlider.disable();
-    // pageSlider.allowSlidePrev = false;
-    // pageSlider.allowSlideNext = false;
     titlesParrent.classList.add('show');
     activeTitleLi.classList.add('show');
     activeTitleLi.classList.remove('unshow');
     galeryWindow.classList.add('increase');
-    // prevtTitle && prevtTitle.classList.add('prew');
     nextTitle && nextTitle.classList.add('next');
   }
 }
@@ -252,15 +452,15 @@ for (let index = 0; index < sliderLink.length; index++) {
   })
 }
 
-
+// Операция для корректной работы секции с услугами
 let pathImage = galeryArr.map((item) => item.src);
 galeryArr[0].src = pathImage[0];
 
-window.onresize = (e) => {
+window.addEventListener('resize', (e) => {
   titlesParrent.addEventListener('transitionend', (e) => {
     updateSize();
   })
-}
+})
 // Изменянем бэкграунд слайдов в зависимости от ширины экрана
 function updateBackground() {
   if (window.innerWidth <= 578.98) {
@@ -286,10 +486,8 @@ function updateSize() {
 }
 
 // Работаем с следущим и предыдущими заголовками (скрываем или показываем)
-// let counter = 0;
 function translateTitle() {
   const activeSlide = servicesSlider.activeIndex; // текущий слайд
-  // counter = activeSlide;
   // Меняем цвет заголовка слайда
   let activeTitle = titlesArr.find(item => item.classList.contains('active'));
   activeTitle && activeTitle.classList.remove('active');
@@ -302,7 +500,6 @@ function translateTitle() {
   if (window.innerWidth >= 578.98) {
     galeryArr[0].src = pathImage[activeSlide];
   }
-
   // Меняем цвет заголовка слайда
   titlesArr[activeSlide].classList.add('active');
   titlesArr[activeSlide - 1] && titlesArr[activeSlide - 1].classList.add('hide');
@@ -344,13 +541,11 @@ stepSelect.addEventListener('click', (e) => {
     selectBtnText.innerText = optionText
     selectBtn.querySelector('.client-type').value = optionText;
     closeContent();
-    // // stepContent.style.height = 'auto';
     return;
   }
 
   if (options.classList.contains('show') && selectBtn) {
     closeContent();
-    // stepContent.style.height = 'auto';
     return;
   }
 
@@ -361,13 +556,11 @@ stepSelect.addEventListener('click', (e) => {
     options.addEventListener('transitionend',
       function () {
         options.classList.remove('show');
-
       }, {
       once: true
     });
   }
 })
-
 
 const briefWrapper = document.querySelector('.brief');
 const briefSteps = briefWrapper.querySelectorAll('.brief__step');
@@ -413,15 +606,12 @@ function remooveFocusClass() {
     }
   }
 }
-
-
 // Принцип работы меню бургер
 const burgerBtn = document.querySelector('.header__menu');
 const navigationMenu = document.querySelector('.site__nav');
 const navigationMenuVideoBg = navigationMenu.querySelector('.video_bg');
 burgerBtn.addEventListener('click', openNavigationMenu);
 function openNavigationMenu(e) {
-  const headerLogo = document.querySelector('.header__logo');
   if (!this.classList.contains('active')) {
     setTimeout(() => {
       headerLogo.style.opacity = '1';
@@ -429,8 +619,9 @@ function openNavigationMenu(e) {
     navigationMenuVideoBg.play();
     this.classList.add('active');
     navigationMenu.classList.add('active');
+
   } else {
-    if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization')) {
+    if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization') && window.innerWidth > 1024) {
       headerLogo.style.opacity = '0';
     }
     setTimeout(() => {
@@ -438,6 +629,9 @@ function openNavigationMenu(e) {
     }, 600);
     this.classList.remove('active');
     navigationMenu.classList.remove('active');
+    if (document.querySelector('.description_modal.show')) {
+      headerLogo.style.opacity = '0';
+    }
   }
 
 }
@@ -461,22 +655,6 @@ briefForm.addEventListener('submit', (e) => {
   e.preventDefault();
 });
 
-
-
-//стераем галерею или востанавливаем в зависимости от ширины экрана
-// const galery = document.querySelector('.galery');
-// const galeryWrapper = galery.querySelector('.galery__wrapper');
-// function galeryUpdate() {
-//   if (window.innerWidth < 579) {
-//     galery.innerHTML = '';
-//   }
-//   else {
-//     galery.append(galeryWrapper);
-//   }
-//   console.log('asdasd');
-// }
-// galeryUpdate();
-// window.addEventListener('resize', galeryUpdate);
 
 
 
@@ -628,11 +806,11 @@ document.querySelector('.calculations__levels').addEventListener('click', functi
   }
 });
 
-
 //Выводим итоговую стоимость стартового положения ползунков в спан
 totalPrice.textContent = getTotalAmount();
 
-//Сферы сеции анализ
+
+//Сферы и описание сеции анализ
 const analizZapoznania = document.querySelector('.analiz__zapoznania'),
   analizWyznaczanieCeli = document.querySelector('.analiz__wyznaczanie_celi'),
   analizWyznaczanieZadan = document.querySelector('.analiz__wyznaczanie_zadan'),
@@ -643,7 +821,7 @@ const analizZapoznania = document.querySelector('.analiz__zapoznania'),
   analizWizjaPozycjonowanie = document.querySelector('.analiz__wizja_pozycjonowanie'),
   analizWizjaPozycjonowanieDescKlient = document.querySelector('.analiz__wizja_pozycjonowanie_desc.klient');
 
-// Сферы секции структура
+// Сферы и описание секции структура
 const strukturaKontentGraficzny = document.querySelector('.struktura__kontent_graficzny'),
   strukturaStronaGlowna = document.querySelector('.struktura__strona_glowna'),
   strukturaKontentTekstowy = document.querySelector('.struktura__kontent_tekstowy'),
@@ -654,15 +832,32 @@ const strukturaKontentGraficzny = document.querySelector('.struktura__kontent_gr
 // Сферы секции програмирование
 const programovanieStronyGlownej = document.querySelector('.programovanie__strony_glownej'),
   programovanieTestowanie = document.querySelector('.programovanie__testowanie'),
-  programovanieStronWewnetrznych = document.querySelector('.programovanie__stron_wewnetrznych');
+  programovanieStronWewnetrznych = document.querySelector('.programovanie__stron_wewnetrznych'),
+  programovanieStronWewnetrznychDescStudia = document.querySelector('.programovanie__stron_wewnetrznych_desc.studia')
+  ;
 
 // Сферы секции продвижение
 const promovanieUruchomienieStrony = document.querySelector('.promovanie__uruchomienie_strony'),
-  promovanieSeoOptymizacja = document.querySelector('.promovanie__seo_optymizacja'),
-  promovanieSmm = document.querySelector('.promovanie__smm'),
-  promovaniePr = document.querySelector('.promovanie__pr'),
-  promovanieDoskonalenie = document.querySelector('.promovanie__doskonalenie');
+  promovanieUruchomienieStronyDescSrudia = document.querySelector('.promovanie__uruchomienie_strony_desc.studia'),
 
+  promovanieSeoOptymizacja = document.querySelector('.promovanie__seo_optymizacja'),
+  promovanieSeoOptymizacjaDescStudia = document.querySelector('.promovanie__seo_optymizacja_desc.studia'),
+
+
+  promovanieSmm = document.querySelector('.promovanie__smm'),
+  promovanieSmmDescStudia = document.querySelector('.promovanie__smm_desc.studia'),
+  promovanieSmmDescKlient = document.querySelector('.promovanie__smm_desc.klient'),
+
+  promovaniePr = document.querySelector('.promovanie__pr'),
+  promovaniePrDescStudia = document.querySelector('.promovanie__pr_desc.studia'),
+  promovaniePrDescLKient = document.querySelector('.promovanie__pr_desc.klient'),
+
+  promovanieDoskonalenie = document.querySelector('.promovanie__doskonalenie'),
+  promovanieDoskonalenieDescStudia = document.querySelector('.promovanie__doskonalenie_desc.studia');
+;
+
+
+// Функция, описывающая размеры сфер диаграммы в зависимости от положения ползунков
 function updateDiagramSize(inputName, InputValue) {
   if (inputName === 'ANALIZA') {
     let analizaRangeIndex = analizaValues.findIndex(value => value === InputValue);
@@ -1125,6 +1320,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '0';
         break;
       case 2:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1140,6 +1336,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '0';
         break;
       case 3:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1155,6 +1352,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '7.8vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       case 4:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1170,6 +1368,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '8.9vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       case 5:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1185,6 +1384,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '10.9vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       case 6:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1200,6 +1400,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '11.7vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       case 7:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1215,6 +1416,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '12.5vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       case 8:
         Object.assign(programovanieStronyGlownej.style, {
@@ -1230,6 +1432,7 @@ function updateDiagramSize(inputName, InputValue) {
           height: '13.3vw',
           opacity: '1',
         });
+        programovanieStronWewnetrznychDescStudia.style.opacity = '1';
         break;
       default:
         break;
@@ -1244,26 +1447,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '0vw',
           opacity: '0',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '0';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '0';
         Object.assign(promovanieSmm.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieSmmDescKlient.style.opacity = '0';
+        promovanieSmmDescStudia.style.opacity = '0';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 1:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1271,26 +1481,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '4.6vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '7vw',
           height: '7vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieSmmDescKlient.style.opacity = '0';
+        promovanieSmmDescStudia.style.opacity = '0';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 2:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1298,26 +1515,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '5.2vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '7.8vw',
           height: '7.8vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieSmmDescKlient.style.opacity = '0';
+        promovanieSmmDescStudia.style.opacity = '0';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 3:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1325,26 +1549,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '6.2vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '8.9vw',
           height: '8.9vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '6.5vw',
           height: '6.5vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 4:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1352,26 +1583,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '6.2vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '9.6vw',
           height: '9.6vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '7.8vw',
           height: '7.8vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 5:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1379,26 +1617,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '6.8vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '10.9vw',
           height: '10.9vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '8.9vw',
           height: '8.9vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovaniePrDescLKient.style.opacity = '0';
+        promovaniePrDescStudia.style.opacity = '0';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 6:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1406,26 +1651,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '7.3vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '12.5vw',
           height: '12.5vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '9.9vw',
           height: '9.9vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '7.3vw',
           height: '7.3vw',
           opacity: '1',
         });
+        promovaniePrDescLKient.style.opacity = '1';
+        promovaniePrDescStudia.style.opacity = '1';
         Object.assign(promovanieDoskonalenie.style, {
           width: '0vw',
           height: '0vw',
           opacity: '0',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '0';
         break;
       case 7:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1433,26 +1685,33 @@ function updateDiagramSize(inputName, InputValue) {
           height: '7.8vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '14.1vw',
           height: '14.1vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '12vw',
           height: '12vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '9.6vw',
           height: '9.6vw',
           opacity: '1',
         });
+        promovaniePrDescLKient.style.opacity = '1';
+        promovaniePrDescStudia.style.opacity = '1';
         Object.assign(promovanieDoskonalenie.style, {
           width: '7.5vw',
           height: '7.5vw',
           opacity: '1',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '1';
         break;
       case 8:
         Object.assign(promovanieUruchomienieStrony.style, {
@@ -1460,32 +1719,44 @@ function updateDiagramSize(inputName, InputValue) {
           height: '8.3vw',
           opacity: '1',
         });
+        promovanieUruchomienieStronyDescSrudia.style.opacity = '1';
         Object.assign(promovanieSeoOptymizacja.style, {
           width: '16.1vw',
           height: '16.1vw',
           opacity: '1',
         });
+        promovanieSeoOptymizacjaDescStudia.style.opacity = '1';
         Object.assign(promovanieSmm.style, {
           width: '13.5vw',
           height: '13.5vw',
           opacity: '1',
         });
+        promovanieSmmDescKlient.style.opacity = '1';
+        promovanieSmmDescStudia.style.opacity = '1';
         Object.assign(promovaniePr.style, {
           width: '10.4vw',
           height: '10.4vw',
           opacity: '1',
         });
+        promovaniePrDescLKient.style.opacity = '1';
+        promovaniePrDescStudia.style.opacity = '1';
         Object.assign(promovanieDoskonalenie.style, {
           width: '9.1vw',
           height: '9.1vw',
           opacity: '1',
         });
+        promovanieDoskonalenieDescStudia.style.opacity = '1';
         break;
       default:
         break;
     }
   }
 }
+
+// Устанавливаем калькулятор на положение CLASSICAL LANDING - CLASSICAL
+$('.calculations__type[data-type="landing"]').click();
+
+
 
 
 
