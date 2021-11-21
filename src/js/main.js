@@ -251,13 +251,13 @@ function openDescriptionModal(e) {
   if (!e.target.closest('a')) {
     return;
   }
-  e.preventDefault();
   descriptionModalElement.classList.remove('show');
   headerLogo.style.opacity = '1';
 
   //Если нажали на ссылки модалки
   const linkDataModalId = e.target.dataset.modalId;
   if (linkDataModalId) {
+    e.preventDefault();
     const slideIndex = descriptionModal.slides.findIndex(item => item.id === linkDataModalId);
     descriptionModal.slideTo(slideIndex, 100, false);
     descriptionModalElement.classList.add('show');
@@ -266,6 +266,7 @@ function openDescriptionModal(e) {
   // Если нажали на ссылки главной страницы
   const linkDataMainId = e.target.dataset.mainId;
   if (linkDataMainId) {
+    e.preventDefault();
     const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
     pageSlider.slideTo(slideIndex, 100, false);
   }
