@@ -57,6 +57,7 @@ const pageSlider = new Swiper('.page', {
   },
   touchEventsTarget: '.page__wrapper',
   touchRatio: 0.3,
+  threshold: 5,
   //Отключаем функционал если слайдов меньше чем нужно
   watchOverflow: true,
   //Скорость
@@ -98,11 +99,12 @@ const pageSlider = new Swiper('.page', {
 
     },
     slideChangeTransitionStart: function () {
+      // настройки корректной работы главного слайдера для каждой секции
       if (pageSlider.slides[pageSlider.realIndex].querySelector('.services')) {
         pageSlider.disable();
-        if (window.innerWidth <= 578.98) {
+        if (window.innerWidth <= 578.98 && pageSlider.previousIndex < pageSlider.realIndex) {
           servicesSlider.enable();
-          servicesSlider.slideNext();
+          servicesSlider.slideTo(1);
           servicesSlider.disable();
         }
       }
@@ -117,6 +119,7 @@ const pageSlider = new Swiper('.page', {
       hideLogo();
     },
     slideChangeTransitionEnd: function () {
+      // настройки корректной работы главного слайдера для каждой секции
       checkWindowSize();
       if (!pageSlider.slides[pageSlider.realIndex].querySelector('.services')) {
         servicesSlider.disable();
@@ -252,7 +255,11 @@ function openDescriptionModal(e) {
     return;
   }
   descriptionModalElement.classList.remove('show');
+  document.querySelector('.footer ').classList.remove('dark');
   headerLogo.style.opacity = '1';
+  if (document.querySelector(".portfolio__work.show")) {
+    document.querySelector(".portfolio__work.show").classList.remove('show');
+  }
 
   //Если нажали на ссылки модалки
   const linkDataModalId = e.target.dataset.modalId;
@@ -260,15 +267,19 @@ function openDescriptionModal(e) {
     e.preventDefault();
     const slideIndex = descriptionModal.slides.findIndex(item => item.id === linkDataModalId);
     descriptionModal.slideTo(slideIndex, 100, false);
+    if (document.querySelector('.description_modal__wrapper.free')) {
+      document.querySelector('.footer ').classList.add('dark');
+    }
     descriptionModalElement.classList.add('show');
     headerLogo.style.opacity = '0';
+    headerLogo.style.visibility = 'hidden';
   }
   // Если нажали на ссылки главной страницы
   const linkDataMainId = e.target.dataset.mainId;
   if (linkDataMainId) {
     e.preventDefault();
     const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
-    pageSlider.slideTo(slideIndex, 100, false);
+    pageSlider.slideTo(slideIndex, 100);
   }
   //Закрываем меню
   setTimeout(() => {
@@ -280,11 +291,55 @@ contactsBriefBtn.onclick = function (e) {
   e.preventDefault();
   const linkDataMainId = contactsBriefBtn.dataset.mainId;
   const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
-  pageSlider.slideTo(slideIndex, 100, false);
+  pageSlider.slideTo(slideIndex, 100);
   headerLogo.style.opacity = '1';
   descriptionModalElement.classList.remove('show');
 }
 
+
+// Логика работы нажатия на логотип при разных условиях
+headerLogo.onclick = clickToLogo;
+function clickToLogo(e) {
+  if (document.querySelector('.services__titles.show')) {
+    return;
+  }
+  if (document.querySelector(".portfolio__work.show")) {
+    document.querySelector(".portfolio__work.show").classList.remove('show');
+    return;
+  }
+  if (document.querySelector('.description_modal.show') && document.querySelector('.site__nav.active')) {
+    document.querySelector('.description_modal').classList.remove('show');
+    pageSlider.slideTo(0);
+    $('.header__menu').click();
+    return;
+  }
+  if (document.querySelector('.site__nav.active')) {
+    $('.header__menu').click();
+    pageSlider.slideTo(0, 100);
+  } else {
+    pageSlider.slideTo(0);
+  }
+}
+document.querySelector('.section_logo').onclick = clickToLogo;
+
+
+
+//Логика работы ссылок на главном экране
+const mainPageLinks = document.querySelector('.links__wrapper');
+mainPageLinks.onclick = function (e) {
+  if (!e.target.closest('a')) {
+    return;
+  }
+  e.preventDefault();
+  const linkDataMainId = e.target.dataset.mainId;
+  const slideIndex = pageSlider.slides.findIndex(item => item.id === linkDataMainId);
+  pageSlider.slideTo(slideIndex, 1800);
+  if (pageSlider.slides[slideIndex].id === 'oferta' && window.innerWidth <= 578.98) {
+    servicesSlider.slideTo(1);
+    servicesSlider.enable();
+  }
+
+}
 
 
 
@@ -294,9 +349,6 @@ const portfilio = new Swiper(".portfolio", {
   slidesPerView: 2,
   preloadImages: true,
   loop: true,
-  // slidesOffsetBefore: 50,
-  // slidesOffsetAfter: 50,
-  speed: 800,
   touchRatio: 1,
   //Обновить слайдер при изменении элементов слайдера
   observer: true,
@@ -324,15 +376,24 @@ const portfilio = new Swiper(".portfolio", {
     slideShadows: false,
   },
   breakpoints: {
-    1465: {
-      slidesPerView: 6,
-    },
+    // 1465: {
+    //   slidesPerView: 6,
+    // },
+    // 1025: {
+    //   slidesPerView: 5,
+    // },
+    // 414: {
+    //   slidesPerView: 3,
+    // },
     1025: {
-      slidesPerView: 5,
+      slidesPerView: 6
+    },
+    768: {
+      slidesPerView: 2
     },
     414: {
-      slidesPerView: 3,
-    },
+      slidesPerView: 3
+    }
   },
   on: {
     resize: function () {
@@ -367,16 +428,37 @@ const servicesSlider = new Swiper('.services__slider', {
   on: {
     // Инициализация 
     init: function () {
-
     },
   }
 });
+
+// Принцип работы открытия работы в портфолио
+const portfolioSlides = document.querySelector('#portfolio');
+portfolioSlides.addEventListener('click', showTargetWork);
+
+function showTargetWork(e) {
+  const workLink = e.target.closest('a');
+  if (!workLink) {
+    return;
+  }
+  const workLinkDatasetId = workLink.dataset.workId;
+  const portfolioWork = document.querySelector(`.portfolio__work[data-work-id="${workLinkDatasetId}"]`);
+  if (portfolioWork) {
+    const portfolioWorkContent = portfolioWork.querySelector('.work__content');
+    portfolioWorkContent.style.paddingTop = `${document.querySelector('header').clientHeight}px`;
+    portfolioWork.classList.add('show');
+    window.addEventListener("resize", (e) => {
+      if (portfolioWork.classList.contains('show')) {
+        portfolioWorkContent.style.paddingTop = `${document.querySelector('header').clientHeight}px`;
+      }
+    })
+  }
+}
 
 
 // Техническая функция для адпативной работы секции с диаграммой
 function checkWindowSize() {
   const windowInnerHeight = document.documentElement.clientHeight;
-  // console.log(windowInnerHeight, diagramPage.scrollHeight);
   if (windowInnerHeight < diagramPage.scrollHeight) {
     diagramPageWrapper.classList.add('no-swipe')
   } else {
@@ -389,10 +471,12 @@ function hideLogo() {
   if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization') && window.innerWidth > 1024 && !document.querySelector('.header__menu.active')
   ) {
     headerLogo.style.opacity = '0';
+    headerLogo.style.visibility = 'hidden';
   }
   else {
     if (!document.querySelector('.description_modal.show')) {
       headerLogo.style.opacity = '1';
+      headerLogo.style.visibility = 'visible';
     }
 
   }
@@ -567,12 +651,10 @@ const briefWrapper = document.querySelector('.brief');
 const briefSteps = briefWrapper.querySelectorAll('.brief__step');
 briefWrapper.addEventListener('click', (e) => {
   if (window.innerWidth <= 578.98 || (window.innerHeight < 1023 && window.innerWidth <= 768)) {
-    // const stepTitle = e.target.closest('.step__title');
     const stepParent = e.target.closest('.brief__step');
     if (!stepParent) {
       return;
     }
-    // const stepParent = stepTitle.closest('.brief__step');
     const stepContent = stepParent.querySelector('.step__content');
     if (stepParent.classList.contains('focus')) {
       return
@@ -616,6 +698,7 @@ function openNavigationMenu(e) {
   if (!this.classList.contains('active')) {
     setTimeout(() => {
       headerLogo.style.opacity = '1';
+      headerLogo.style.visibility = 'visible';
     }, 300);
     navigationMenuVideoBg.play();
     this.classList.add('active');
@@ -624,6 +707,7 @@ function openNavigationMenu(e) {
   } else {
     if (pageSlider.slides[pageSlider.realIndex].querySelector('.visualization') && window.innerWidth > 1024) {
       headerLogo.style.opacity = '0';
+      headerLogo.style.visibility = 'hidden';
     }
     setTimeout(() => {
       navigationMenuVideoBg.pause();
@@ -632,6 +716,7 @@ function openNavigationMenu(e) {
     navigationMenu.classList.remove('active');
     if (document.querySelector('.description_modal.show')) {
       headerLogo.style.opacity = '0';
+      headerLogo.style.visibility = 'hidden';
     }
   }
 
@@ -641,12 +726,57 @@ function openNavigationMenu(e) {
 const preloader = document.querySelector('#preloader');
 const preloaderVideo = preloader.querySelector('video');
 const mainVideo = document.querySelector('.main_video video');
+const mainScreenContentLi = document.querySelectorAll('.main__content_list > li');
+function UpdateMainText() {
+  let interval = 0;
+  const step = 8333;
+  const transitionInterval = 1250;
+  setTimeout(() => {
+    mainScreenContentLi[2].classList.remove('up');
+    mainScreenContentLi[2].classList.add('down');
+    setTimeout(() => {
+      mainScreenContentLi[0].classList.add('up');
+    }, transitionInterval);
+    setTimeout(() => {
+      mainScreenContentLi[2].classList.remove('down');
+    }, 1000);
+  }, interval);
+  interval += step;
+  setTimeout(() => {
+    mainScreenContentLi[0].classList.remove('up');
+    mainScreenContentLi[0].classList.add('down');
+    setTimeout(() => {
+      mainScreenContentLi[1].classList.add('up');
+    }, transitionInterval);
+    setTimeout(() => {
+      mainScreenContentLi[0].classList.remove('down');
+    }, 1000);
+  }, interval);
+
+  interval += step;
+  setTimeout(() => {
+    mainScreenContentLi[1].classList.remove('up');
+    mainScreenContentLi[1].classList.add('down');
+    setTimeout(() => {
+      mainScreenContentLi[2].classList.add('up');
+    }, transitionInterval);
+
+    setTimeout(() => {
+      mainScreenContentLi[1].classList.remove('down');
+    }, 1000);
+  }, interval);
+}
+// принцип работы прелоадера и текста на главном экране
 window.addEventListener('load', (e) => {
   if (preloader) {
     preloader.classList.add('hide');
     preloaderVideo.pause();
     document.body.classList.add('loaded');
     mainVideo.play();
+    UpdateMainText();
+    setInterval(() => {
+      UpdateMainText();
+    }, 25000);
   }
 });
 
@@ -655,7 +785,16 @@ const briefForm = document.querySelector('.brief__form');
 briefForm.addEventListener('submit', (e) => {
   e.preventDefault();
 });
-
+// Размытие фона в textarea секции бриф  
+const textareaWrapper = document.querySelector('.textarea__wrapper');
+const textArea = textareaWrapper.querySelector('textarea');
+const blurBg = textareaWrapper.querySelector('.blur__bg');
+textArea.addEventListener('focus', (e) => {
+  blurBg.classList.add('show')
+  textArea.addEventListener('blur', (e) => {
+    blurBg.classList.remove('show')
+  }, { once: true });
+})
 
 
 
@@ -809,7 +948,6 @@ document.querySelector('.calculations__levels').addEventListener('click', functi
 
 //Выводим итоговую стоимость стартового положения ползунков в спан
 totalPrice.textContent = getTotalAmount();
-
 
 //Сферы и описание сеции анализ
 const analizZapoznania = document.querySelector('.analiz__zapoznania'),
@@ -1760,6 +1898,13 @@ $('.calculations__type[data-type="landing"]').click();
 
 
 
+// Функция описывающая возможность закрыть заботу из портфолио при нажатии кнопки назад в браузере
+let workCounter = false;
+window.addEventListener("popstate", function (e) {
+  const portfolioWork = document.querySelector('.portfolio__work');
+  workCounter && portfolioWork.classList.remove('show');
+  workCounter = portfolioWork.classList.contains('show');
+}, false);
 
 
 

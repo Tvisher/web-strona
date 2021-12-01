@@ -165,26 +165,26 @@ window.onload = function () {
 			},
 		}
 	}
-	var params2 = {
-		vertexShader: shader.vertex, // our vertex shader ID
-		fragmentShader: shader.fragment2, // our framgent shader ID
-		alwaysDraw: true,
-		widthSegments: 40,
-		heightSegments: 40, // we now have 40*40*6 = 9600 vertices !
-		uniforms: {
-			time: {
-				name: "uTime", // uniform name that will be passed to our shaders
-				type: "1f", // this means our uniform is a float
-				value: 0,
-			},
-		}
-	}
+	// var params2 = {
+	// 	vertexShader: shader.vertex, // our vertex shader ID
+	// 	fragmentShader: shader.fragment2, // our framgent shader ID
+	// 	alwaysDraw: true,
+	// 	widthSegments: 40,
+	// 	heightSegments: 40, // we now have 40*40*6 = 9600 vertices !
+	// 	uniforms: {
+	// 		time: {
+	// 			name: "uTime", // uniform name that will be passed to our shaders
+	// 			type: "1f", // this means our uniform is a float
+	// 			value: 0,
+	// 		},
+	// 	}
+	// }
 
 	// create our plane mesh
 	var plane = webGLCurtain.addPlane(planeElement, params);
 
-	var secondplane = webGLCurtain2.addPlane(document.querySelector('.blackBG')
-		, params2);
+	// var secondplane = webGLCurtain2.addPlane(document.querySelector('.blackBG')
+	// 	, params2);
 	// console.log(secondplane);
 
 
@@ -192,7 +192,7 @@ window.onload = function () {
 	plane.onReady(function () {
 		if (window.innerWidth >= 578.98) {
 			plane.setPerspective(100);
-			secondplane.setPerspective(99);
+			// secondplane.setPerspective(99);
 		}
 		// set a field of view of 35 to exagerate perspective
 		// we could have done  it directly in the initial params
@@ -202,7 +202,7 @@ window.onload = function () {
 		// update our time uniform value
 		if (window.innerWidth >= 578.98) {
 			plane.uniforms.time.value++;
-			secondplane.uniforms.time.value++;
+			// secondplane.uniforms.time.value++;
 		}
 
 	});

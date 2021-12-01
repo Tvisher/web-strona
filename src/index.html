@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-  <link rel="shortcut icon" href="/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="theme-color" content="#111111">
-  <title>Web-Strona</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <title>MOJA WEBSTRONA</title>
   <!-- preload fonts -->
   <link rel="preload" href="fonts/PTSerifCaption-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="fonts/Roboto-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -19,7 +20,7 @@
 <body>
   <div id="preloader">
     <!-- Видео для прелоадера -->
-    <video playsinline="" loop="" autoplay="" muted="" preload="metadata" src="./preloader_.mp4"></video>
+    <video playsinline loop autoplay muted preload="metadata" src="./preloader_.mp4"></video>
   </div>
   <div class="site__nav">
     <div class="lines">
@@ -30,18 +31,22 @@
       <div class="line"></div>
     </div>
     <div class="nav__bg">
-      <video playsinline="" loop="" muted="" preload="metadata" src="./preloader_.mp4" class="video_bg"></video>
+      <!-- Видео на первом экране -->
+      <video playsinline loop="" muted="" preload="metadata" src="./preloader_.mp4" class="video_bg"></video>
     </div>
     <div class="nav__content">
       <nav>
         <ul class="nav_col">
-          <li>
+          <li class="small">
             <a href="#" data-main-id="firstScreen">STRONA GŁÓWNA</a>
           </li>
         </ul>
         <ul class="nav_col">
           <li>
             <a href="#" data-main-id="portfolio">PORTFOLIO</a>
+          </li>
+          <li>
+            <a href="#" data-main-id="oferta">OFERTA</a>
           </li>
         </ul>
         <ul class="nav_col">
@@ -75,6 +80,7 @@
       </nav>
     </div>
   </div>
+  <!-- background линии -->
   <div class="lines">
     <div class="line"></div>
     <div class="line"></div>
@@ -126,8 +132,8 @@
           </div>
           <div class="links" data-swiper-parallax="33%" data-swiper-parallax-opacity="0.3">
             <div class="links__wrapper">
-              <a href="#" class="portfolio__link">PORTFOLIO</a>
-              <a href="#" class="oferta__link">OFERTA</a>
+              <a href="#" data-main-id="portfolio" class="portfolio__link">PORTFOLIO</a>
+              <a href="#" data-main-id="oferta" class="oferta__link">OFERTA</a>
             </div>
           </div>
           <div class="screen__content first-screen">
@@ -135,6 +141,44 @@
               <video playsinline="" loop="" muted="" preload="metadata" src="./DavidHeadUno.mp4"></video>
             </div>
           </div>
+          <ul class="main__content_list">
+            <li class="list__item">
+              <h1 class="main__title">Konceptualnie nowe Podejście do Rynku</h1>
+              <p class="list__item_desc">Dynamiczne zmiany rynkowewymagają błyskawicznej reakcji. Bądź twórcą tych zmian</p>
+            </li>
+            <li class="list__item list">
+              <ul class="offer__list">
+                <li>
+                  <h3>Strony Korporatywne</h3>
+                  <p>Unikatowy produkt nie znaczy skomplikowany,
+                    wręcz przeciwnie, on jest prosty i zrozumiału</p>
+                </li>
+                <li>
+                  <h3>
+                    E - SHOP
+                  </h3>
+                  <p>
+                    Progresywne systemy podnoszą komercje na inny poziom.
+                    Teraz wszystkie technologie na dystansie ręki
+                  </p>
+                </li>
+                <li>
+                  <h3>
+                    Branding
+                  </h3>
+                  <p>
+                    Pozycjonowanie marki jest kluczowym w budownictwie
+                    długotrwałejrelacji z klientem. Wiemy gdzie i w jaki
+                    sposób osiągnąć ten cel
+                  </p>
+                </li>
+              </ul>
+            </li>
+            <li class="list__item last">
+              <h2 class="main__title">Odkrywamy nowe horyzonty przed twoją Firmą</h2>
+              <p class="list__item_desc">DESIGN który ZMIENIA sposób postrzegania twojej MARKI</p>
+            </li>
+          </ul>
         </div>
         <!-- Секция потфолио -->
         <div class="page__screen screen" id="portfolio">
@@ -142,29 +186,38 @@
             <div class="swiper portfolio" data-swiper-parallax="53%" data-swiper-parallax-opacity="0.3" data-swiper-parallax-scale="1.5">
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                  <a href="#1" data-work-id="1"> <img src="./img/Rectangle.jpg" alt=""></a>
+                  <a href="#1" data-work-id="1"> <img src="./img/9.png" alt=""></a>
                 </div>
                 <div class="swiper-slide">
-                  <a href="#2" data-work-id="2"> <img src="./img/Rectangle-1.jpg" alt=""></a>
+                  <a href="#2" data-work-id="2"> <img src="./img/7.png" alt=""></a>
                 </div>
                 <div class="swiper-slide">
-                  <a href="#3" data-work-id="3"> <img src="./img/Rectangle-2.jpg" alt=""></a>
+                  <a href="#3" data-work-id="3"> <img src="./img/3.png" alt=""></a>
                 </div>
                 <div class="swiper-slide">
-                  <a href="#4" data-work-id="4"> <img src="./img/Rectangle.jpg" alt=""></a>
+                  <a href="#4" data-work-id="4"> <img src="./img/4.png" alt=""></a>
                 </div>
                 <div class="swiper-slide">
-                  <a href="#5" data-work-id="5"> <img src="./img/Rectangle-1.jpg" alt=""></a>
+                  <a href="#5" data-work-id="5"> <img src="./img/5.png" alt=""></a>
                 </div>
                 <div class="swiper-slide">
-                  <a href="#6" data-work-id="6"> <img src="./img/Rectangle-2.jpg" alt=""></a>
+                  <a href="#6" data-work-id="6"> <img src="./img/2.png" alt=""></a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="#6" data-work-id="7"> <img src="./img/1.png" alt=""></a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="#6" data-work-id="8"> <img src="./img/8.png" alt=""></a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="#6" data-work-id="9"> <img src="./img/6.png" alt=""></a>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <!-- Оффер -->
-        <div class="page__screen screen">
+        <div class="page__screen screen" id="oferta">
           <div class="screen__content">
             <div class="services" data-swiper-parallax="80%" data-swiper-parallax-opacity="0.1">
               <div class="services__wrapper">
@@ -175,9 +228,9 @@
                       <div id="canvas"></div>
                       <div class="plane">
                         <img class="active" src="./img/website.jpg" data-src="./img/website.jpg" alt="">
-                        <img class="" src="./img/landing.jpg" data-src="./img/landing.jpg" alt="">
-                        <img class="" src="./img//e-shop.jpg" data-src="./img//e-shop.jpg" alt="">
-                        <img class="" src="./img/branding.jpg" data-src="./img/branding.jpg" alt="">
+                        <img class="" src="./img/landing.png" data-src="./img/landing.png" alt="">
+                        <img class="" src="./img//e-shop.png" data-src="./img//e-shop.png" alt="">
+                        <img class="" src="./img/branding.png" data-src="./img/branding.png" alt="">
                         <img class="" src="./img/uslugi.jpg" data-src="./img/uslugi.jpg" alt="">
                       </div>
                     </div>
@@ -319,6 +372,7 @@
                     </div>
                   </li>
                 </ul>
+                <!-- Технические слайды для работы секции offer -->
                 <div class="services__slider">
                   <div class="services__container">
                     <!-- First slide -->
@@ -657,6 +711,7 @@
                     <div class="total__price">
                       <span class="price__value" id="priceValue">0</span>
                       <span class="price__currency">ZŁ.</span>
+                      <div class="tooltip">cena netto</div>
                     </div>
                   </div>
                   <div class="calculations__prompt">
@@ -779,10 +834,10 @@
                     </div>
                     <h3 class="step__title">DANE KONTAKTOWE</h3>
                     <div class="step__content">
-                      <input type="text" placeholder="Imie" name="name">
-                      <input type="text" placeholder="Stanowisko" name="position">
-                      <input type="email" placeholder="Mail" name="email">
-                      <input type="tel" placeholder="Telefon" name="phone">
+                      <input autocomplete='off' type="text" placeholder="Imie" name="name">
+                      <input autocomplete='off' type="text" placeholder="Stanowisko" name="position">
+                      <input autocomplete='off' type="email" placeholder="Mail" name="email">
+                      <input autocomplete='off' type="tel" placeholder="Telefon" name="phone">
                       <div class="messengers">
                         <input type="checkbox" class="custom-checkbox" id="viber" name="viber">
                         <label for="viber">Viber</label>
@@ -800,7 +855,7 @@
                     </div>
                     <h3 class="step__title">O MNIE</h3>
                     <div class="step__content">
-                      <input type="text" placeholder="Linki stron społecznych " name="social-links">
+                      <input autocomplete='off' type="text" placeholder="Linki stron społecznych " name="social-links">
                     </div>
                   </div>
                   <div class="brief__step">
@@ -834,6 +889,7 @@
     </div>
   </footer>
 
+  <!-- Fulscreen модалка с тектовыми блоками -->
   <div class="description_modal">
     <div class="description_modal_logo">
       <svg width="172" height="50" viewBox="0 0 172 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1044,6 +1100,20 @@
             </li>
             <li class="list__item">
               <h3 class="item__title">
+                PORTALI
+                INTERNETOWE
+              </h3>
+              <p class="item__text">
+                Przygotujemy dla Ciebie Portal, który będzie
+                odpowiadał twoim oczekiwaniom i
+                oczekiwaniom twoich klientów. Wiemy jak
+                jest ważny komfort z korzystania takich storn,
+                tak że zapewnimy odpowiedni poziom
+                techniczny i uczucie wyjątkowego stylu
+              </p>
+            </li>
+            <li class="list__item">
+              <h3 class="item__title">
                 SQUEEZE
                 PAGE
               </h3>
@@ -1061,20 +1131,6 @@
             </li>
             <li class="list__item">
               <h3 class="item__title">
-                PORTALII
-                NTERNETOWE
-              </h3>
-              <p class="item__text">
-                Przygotujemy dla Ciebe Portal, który będzie
-                odpowiadał twoim oczekiwaniom i
-                oczekiwaniom twoich klientów. Wiemy jak
-                jest ważny komfort z kożystania takich storn,
-                tak że zapewnimy odpowiedni poziom
-                techniczny i uczucie wyjątkowego stylu
-              </p>
-            </li>
-            <li class="list__item">
-              <h3 class="item__title">
                 STRONY
                 PERSONALNE
               </h3>
@@ -1082,9 +1138,8 @@
                 BRANDFACE - staje się niezbędnym
                 instrumentem przemawiania do klienta.
                 Z tego korzystają jak duże firmy tak również
-                i osoby medyjne.
-                Tylko bardzo wyjątkowe i kreatywne
-                podejśćie do opracowania strony
+                i osoby medyjne. Tylko bardzo wyjątkowe i
+                kreatywne podejśćie do opracowania strony
                 personalnej pozwoli osiągnąć najlepsze
                 wyniki
               </p>
@@ -1151,9 +1206,7 @@
       </section>
       <section class="description_modal__sectoion" id="cooperation">
         <div class="section__content">
-          <h2 class="section__title">
-            etapy spółwpracy
-          </h2>
+          <h2 class="section__title">etapy spółwpracy</h2>
           <ul class="section__list">
             <li class="list__item">
               <h3 class="item__title">
@@ -1344,8 +1397,10 @@
                 </g>
               </svg>
             </div>
-            <p class="section__desc">JESTEŚMY AMBITNĄ FIRMĄ KTÓRA SKUPIA SIĘ NA NOWOCZESNYCH DIGITAL TECHNOLOGIACH. KREATYWNE I ŚMIAWE PODEJŚCIE DO DESIGN PODKREŚLA NASZE MOCNE STRONY.WĄCZYMY NOWOCZESNE SYSTEMY ORAZ INSTRUMENTY ZARZĄDZANIA RYNKIEM. ZNAMY JAK OSIĄGNĄĆ ESTETYKĘ I KOMFORT OD KORZYSTANIA UX/UI DESIG </p>
-            <p class="section__desc">NWIEMY GDZIE DOKŁADNIE I W JAKI SPOSÓB TWOJA FIRMA MOŻĘ ZYSKAĆ NOWE MOŻLIWOŚCI ROZWOJU </p>
+            <p class="section__desc">
+              Jesteśmy ambitną firmą która skupia się na nowoczesnych digital technologiach. kreatywne i śmiawe podejście do design podkreśla nasze mocne strony.wączymy nowoczesne systemy oraz instrumenty zarządzania rynkiem. Znamy jak osiągnąć estetykę i komfort od korzystania ux/ui design
+            </p>
+            <p class="section__desc">Wiemy gdzie dokładnie i w jaki sposób twoja firma możę zyskać nowe możliwości rozwoju</p>
           </div>
           <h3 class="contacts__title">KONTAKT</h3>
           <div class="contacts__footer">
@@ -1376,8 +1431,64 @@
     <div class="description_modal__pagination"></div>
   </div>
 
+  <div class="portfolio__work work" data-work-id="1">
+    <div class="work__content">
+      <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+      <div class="work__desc">OSOBLIWE PRODUKTU WYMAGAJĄ OSOBLIWEGO PODEJŚCIA </div>
+      <div class="work__poster_wrapper">
+        <div class="work__postrer">
+          <img src="./img/11.png" alt="">
+        </div>
+      </div>
+      <h2 class="work__title">LANESTA</h2>
+      <a href="https://www.lanesta.eu" target="_blank" class="work__link">https://www.lanesta.eu</a>
+      <div class="goals">
+        <h2 class="goals__title">WYZWANIA</h2>
+        <p class="goals__desc left">DZIĘKI WYBORUKONTENTU PODKREŚLIĆ PZEMEŚLNICZE APOCHODZENIA</p>
+        <div class="goals__gallery">
+          <div class="goals__gallery_img vertical">
+            <img src="./img/4.4.png" alt="">
+          </div>
+          <div class="goals__gallery_img horizontal fitst">
+            <img src="./img/2.2.png" alt="">
+          </div>
+          <div class="goals__gallery_img horizontal second">
+            <img src="./img/3.3.png" alt="">
+          </div>
+        </div>
+        <p class="goals__desc right">SWTORZYĆ STRONĘ SKUPIAJĄC UWAGĘ NA WYJĄTKOWOŚCI I NIESPOTYKALNOŚCI PRODUKTYU</p>
+        <p class="goals__desc right">UŁATWIĆ SYSTEM ZARZĄDZANIA KONTENTEM ORAZ UPROŚCIĆ PODEJŚCIE DO WEB-SURFINGU </p>
+      </div>
+      <div class="solutions">
+        <h2 class="solutions__title">ROZWIAZANIA</h2>
+        <div class="solutions__gallery">
+          <div class="solutions__gallery_img">
+            <img src="./img/5.5.png" alt="">
+          </div>
+          <div class="solutions__gallery_img">
+            <img src="./img/6.6.png" alt="">
+          </div>
+        </div>
+        <p class="solutions__desc left">NA CZOŁOWE MIEJSCE ZAMIEŚCILIŚMY INFORMACJE DOTYCZĄCE ATELJE Z MOŻLIWOŚCIĄ OMUWIENIA SIĘ NA SPOTKANIE</p>
+        <div class="solutions__text_block">
+          <p class="solutions__desc">UX DESIGN STRONY ZOSTAW OPRACOWANY NA PODSTAWIE INTUITYWNEGO SYSTEMU KTÓRY ROZPOZNAJE I PRZEWIDUJE DZIAŁANIA KLIENTA</p>
+          <p class="solutions__desc">ESTETYKA MINIMALIZMU ORAZ IDEALNIE DOPASOWANIE KOLORYSTYKI STRONY ZACHWYCA WRAŻENIA </p>
+        </div>
+      </div>
+      <a href="https://www.lanesta.eu" target="_blank" class="work__link bottom">https://www.lanesta.eu</a>
+    </div>
+  </div>
   <script src="js/vendor.js"></script>
   <script src="js/main.js"></script>
+  <script>
+
+  </script>
 </body>
 
 </html>
