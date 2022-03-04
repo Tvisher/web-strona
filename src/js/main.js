@@ -1,4 +1,3 @@
-
 //Технически переменные
 const headerLogo = document.querySelector('.header__logo');
 const mainPagination = document.querySelector('.page__pagination');
@@ -11,6 +10,7 @@ const diagramPageWrapper = diagramPage.parentNode;
 const parent_original = document.querySelector('.calculations');
 const parent = document.querySelector('.calculations__footer');
 const item = document.querySelector('.calculations__levels');
+
 //Функция для перемещиня элементов калькулятора
 function move() {
   const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -26,7 +26,8 @@ function move() {
     }
   }
 }
-//Вызываем функцию
+
+// Вызываем функцию
 move();
 //Главный слайдер сайта
 const pageSlider = new Swiper('.page', {
@@ -87,14 +88,14 @@ const pageSlider = new Swiper('.page', {
   },
   //События слайдера
   on: {
-    // Инициализация 
+    // Инициализация
     init: function () {
       // checkWindowSize()
     },
     afterInit: function () {
       document.body.classList.add('loaded');
     },
-    // Смена слайда 
+    // Смена слайда
     slideChange: function () {
 
     },
@@ -199,14 +200,14 @@ const descriptionModal = new Swiper('.description_modal', {
   },
   //События слайдера
   on: {
-    // Инициализация 
+    // Инициализация
     init: function () {
       setScrollType();
     },
     afterInit: function () {
 
     },
-    // Смена слайда 
+    // Смена слайда
     slideChange: function () {
 
     },
@@ -223,6 +224,7 @@ const descriptionModal = new Swiper('.description_modal', {
   }
 });
 descriptionModal.init();
+
 //Проверка помещяется ли контент в область экрана. Если нет, отключаем поэкранную прокрутку
 function setScrollType() {
   if (descriptionModalWrapper.classList.contains('free')) {
@@ -250,6 +252,7 @@ function setScrollType() {
 //Логика работы ссылок в меню
 const navContent = document.querySelector('.nav__content');
 navContent.addEventListener('click', openDescriptionModal);
+
 function openDescriptionModal(e) {
   if (!e.target.closest('a')) {
     return;
@@ -286,6 +289,7 @@ function openDescriptionModal(e) {
     $('.header__menu').click();
   }, 200);
 }
+
 const contactsBriefBtn = document.querySelector('.contacts__brief');
 contactsBriefBtn.onclick = function (e) {
   e.preventDefault();
@@ -299,6 +303,7 @@ contactsBriefBtn.onclick = function (e) {
 
 // Логика работы нажатия на логотип при разных условиях
 headerLogo.onclick = clickToLogo;
+
 function clickToLogo(e) {
   if (document.querySelector('.services__titles.show')) {
     return;
@@ -320,8 +325,8 @@ function clickToLogo(e) {
     pageSlider.slideTo(0);
   }
 }
-document.querySelector('.section_logo').onclick = clickToLogo;
 
+document.querySelector('.section_logo').onclick = clickToLogo;
 
 
 //Логика работы ссылок на главном экране
@@ -340,7 +345,6 @@ mainPageLinks.onclick = function (e) {
   }
 
 }
-
 
 
 //Слайдер секции портфолио
@@ -426,7 +430,7 @@ const servicesSlider = new Swiper('.services__slider', {
   speed: 800,
   //События слайдера
   on: {
-    // Инициализация 
+    // Инициализация
     init: function () {
     },
   }
@@ -472,8 +476,7 @@ function hideLogo() {
   ) {
     headerLogo.style.opacity = '0';
     headerLogo.style.visibility = 'hidden';
-  }
-  else {
+  } else {
     if (!document.querySelector('.description_modal.show')) {
       headerLogo.style.opacity = '1';
       headerLogo.style.visibility = 'visible';
@@ -482,9 +485,10 @@ function hideLogo() {
   }
 }
 
-// Логика работы секции услуг 
+// Логика работы секции услуг
 const wrapper = document.querySelector('.services__wrapper');
 wrapper.addEventListener('click', clickOnSlide);
+
 function clickOnSlide(e) {
   !e.target.closest('services') && false;
   const activeTitleLi = titlesArr[servicesSlider.realIndex];
@@ -546,6 +550,7 @@ window.addEventListener('resize', (e) => {
     updateSize();
   })
 })
+
 // Изменянем бэкграунд слайдов в зависимости от ширины экрана
 function updateBackground() {
   if (window.innerWidth <= 578.98) {
@@ -553,14 +558,14 @@ function updateBackground() {
       const element = titlesEl[index];
       element.style.backgroundImage = `url(${galeryArr[index].dataset.src})`;
     }
-  }
-  else {
+  } else {
     for (let index = 0; index < titlesEl.length; index++) {
       const element = titlesEl[index];
       element.style.backgroundImage = `none`;
     }
   }
 }
+
 updateBackground();
 window.addEventListener('resize', updateBackground);
 
@@ -592,8 +597,8 @@ function translateTitle() {
   //Прокручиваем список заголовков
   updateSize();
 }
-servicesSlider.on('realIndexChange', translateTitle);
 
+servicesSlider.on('realIndexChange', translateTitle);
 
 
 // Описываем принцип работы кастомного селекта секции бриф
@@ -689,11 +694,13 @@ function remooveFocusClass() {
     }
   }
 }
+
 // Принцип работы меню бургер
 const burgerBtn = document.querySelector('.header__menu');
 const navigationMenu = document.querySelector('.site__nav');
 const navigationMenuVideoBg = navigationMenu.querySelector('.video_bg');
 burgerBtn.addEventListener('click', openNavigationMenu);
+
 function openNavigationMenu(e) {
   if (!this.classList.contains('active')) {
     setTimeout(() => {
@@ -727,6 +734,7 @@ const preloader = document.querySelector('#preloader');
 const preloaderVideo = preloader.querySelector('video');
 const mainVideo = document.querySelector('.main_video video');
 const mainScreenContentLi = document.querySelectorAll('.main__content_list > li');
+
 function UpdateMainText() {
   let interval = 0;
   const step = 8333;
@@ -766,6 +774,7 @@ function UpdateMainText() {
     }, 1000);
   }, interval);
 }
+
 // принцип работы прелоадера и текста на главном экране
 window.addEventListener('load', (e) => {
   if (preloader) {
@@ -785,7 +794,7 @@ const briefForm = document.querySelector('.brief__form');
 briefForm.addEventListener('submit', (e) => {
   e.preventDefault();
 });
-// Размытие фона в textarea секции бриф  
+// Размытие фона в textarea секции бриф
 const textareaWrapper = document.querySelector('.textarea__wrapper');
 const textArea = textareaWrapper.querySelector('textarea');
 const blurBg = textareaWrapper.querySelector('.blur__bg');
@@ -795,7 +804,6 @@ textArea.addEventListener('focus', (e) => {
     blurBg.classList.remove('show')
   }, { once: true });
 })
-
 
 
 //Добавляем в каждое поле параметров калькулятора цифру 0 для корректной настройки плагина ползунков
@@ -1894,8 +1902,6 @@ function updateDiagramSize(inputName, InputValue) {
 
 // Устанавливаем калькулятор на положение CLASSICAL LANDING - CLASSICAL
 $('.calculations__type[data-type="landing"]').click();
-
-
 
 
 // Функция описывающая возможность закрыть заботу из портфолио при нажатии кнопки назад в браузере
